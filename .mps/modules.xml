@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="MPSProject">
+    <projectModules>
+      <modulePath path="$PROJECT_DIR$/languages/CoryLang/CoryLang.mpl" folder="" />
+      <modulePath path="$PROJECT_DIR$/languages/CoryLangWasm/CoryLangWasm.mpl" folder="" />
+      <modulePath path="$PROJECT_DIR$/solutions/CoryLang.sandbox/CoryLang.sandbox.msd" folder="" />
+      <modulePath path="$PROJECT_DIR$/../MPS_WASM/languages/WebAssembly/WebAssembly.mpl" folder="" />
+    </projectModules>
+  </component>
+</project>
