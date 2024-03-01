@@ -68,7 +68,18 @@
       <concept id="6925410296616604458" name="WebAssembly.structure.TypeSection" flags="ng" index="2dGqNi">
         <child id="6925410296617483748" name="ft" index="2dF48s" />
       </concept>
+      <concept id="6925410296624280754" name="WebAssembly.structure.ImportFuncDesc" flags="ng" index="2e18Ha">
+        <child id="6925410296624280756" name="typeidx" index="2e18Hc" />
+      </concept>
       <concept id="6925410296624248116" name="WebAssembly.structure.TypeIdx" flags="ng" index="2e1gFc" />
+      <concept id="6925410296624248081" name="WebAssembly.structure.Import" flags="ng" index="2e1gFD">
+        <property id="6925410296624248088" name="nm" index="2e1gFw" />
+        <property id="6925410296624248086" name="mod" index="2e1gFI" />
+        <child id="6925410296624280790" name="desc" index="2e18GI" />
+      </concept>
+      <concept id="6925410296623607870" name="WebAssembly.structure.ImportSection" flags="ng" index="2e3GZ6">
+        <child id="6925410296625599575" name="imports" index="2ea6IJ" />
+      </concept>
       <concept id="4172580935705206252" name="WebAssembly.structure.CodeSection" flags="ng" index="3cCm6G">
         <child id="4172580935705206253" name="codes" index="3cCm6H" />
       </concept>
@@ -142,6 +153,41 @@
                         <ref role="3TtcxE" to="i6s:3BBZ43THufE" resolve="statements" />
                       </node>
                     </node>
+                    <node concept="2YIFZM" id="7K_nJtgrGk1" role="37wK5m">
+                      <ref role="37wK5l" to="w95y:7K_nJtgr_hu" resolve="empty" />
+                      <ref role="1Pybhc" to="w95y:7K_nJtgr_fk" resolve="TransformState" />
+                    </node>
+                  </node>
+                </node>
+              </node>
+            </node>
+          </node>
+        </node>
+      </node>
+      <node concept="2e3GZ6" id="7K_nJtgu17x" role="2d$Tkv">
+        <node concept="2e1gFD" id="7K_nJtgu1o0" role="2ea6IJ">
+          <property role="2e1gFI" value="apples" />
+          <property role="2e1gFw" value="pies" />
+          <node concept="2e18Ha" id="7K_nJtgu1pk" role="2e18GI">
+            <node concept="2e1gFc" id="7K_nJtgu1pm" role="2e18Hc" />
+          </node>
+          <node concept="2b32R4" id="7K_nJtgwy_L" role="lGtFl">
+            <node concept="3JmXsc" id="7K_nJtgwy_O" role="2P8S$">
+              <node concept="3clFbS" id="7K_nJtgwy_P" role="2VODD2">
+                <node concept="3clFbF" id="7K_nJtgwz4H" role="3cqZAp">
+                  <node concept="2YIFZM" id="7K_nJtgwzmk" role="3clFbG">
+                    <ref role="37wK5l" to="w95y:7K_nJtgvJoj" resolve="importsDeclarations" />
+                    <ref role="1Pybhc" to="w95y:7K_nJtfkF1N" resolve="TypeTransformHelpers" />
+                    <node concept="2OqwBi" id="7K_nJtgwzY$" role="37wK5m">
+                      <node concept="30H73N" id="7K_nJtgwzAh" role="2Oq$k0" />
+                      <node concept="3Tsc0h" id="7K_nJtgw$wO" role="2OqNvi">
+                        <ref role="3TtcxE" to="i6s:3BBZ43THufE" resolve="statements" />
+                      </node>
+                    </node>
+                    <node concept="2YIFZM" id="7K_nJtgw$ZN" role="37wK5m">
+                      <ref role="37wK5l" to="w95y:7K_nJtgr_hu" resolve="empty" />
+                      <ref role="1Pybhc" to="w95y:7K_nJtgr_fk" resolve="TransformState" />
+                    </node>
                   </node>
                 </node>
               </node>
@@ -155,14 +201,18 @@
             <node concept="3JmXsc" id="7K_nJtflwbl" role="2P8S$">
               <node concept="3clFbS" id="7K_nJtflwbm" role="2VODD2">
                 <node concept="3clFbF" id="7K_nJtflwDP" role="3cqZAp">
-                  <node concept="2YIFZM" id="7K_nJtflwX4" role="3clFbG">
-                    <ref role="37wK5l" to="w95y:7K_nJtfl3JS" resolve="typeIdxDeclaration" />
+                  <node concept="2YIFZM" id="7K_nJtgvExY" role="3clFbG">
+                    <ref role="37wK5l" to="w95y:7K_nJtfl3JS" resolve="funcsDeclarations" />
                     <ref role="1Pybhc" to="w95y:7K_nJtfkF1N" resolve="TypeTransformHelpers" />
-                    <node concept="2OqwBi" id="7K_nJtflxGi" role="37wK5m">
-                      <node concept="30H73N" id="7K_nJtflxk7" role="2Oq$k0" />
-                      <node concept="3Tsc0h" id="7K_nJtfly8E" role="2OqNvi">
+                    <node concept="2OqwBi" id="7K_nJtgvExZ" role="37wK5m">
+                      <node concept="30H73N" id="7K_nJtgvEy0" role="2Oq$k0" />
+                      <node concept="3Tsc0h" id="7K_nJtgvEy1" role="2OqNvi">
                         <ref role="3TtcxE" to="i6s:3BBZ43THufE" resolve="statements" />
                       </node>
+                    </node>
+                    <node concept="2YIFZM" id="7K_nJtgvEy2" role="37wK5m">
+                      <ref role="37wK5l" to="w95y:7K_nJtgr_hu" resolve="empty" />
+                      <ref role="1Pybhc" to="w95y:7K_nJtgr_fk" resolve="TransformState" />
                     </node>
                   </node>
                 </node>
@@ -185,6 +235,10 @@
                       <node concept="3Tsc0h" id="7K_nJtfm7f6" role="2OqNvi">
                         <ref role="3TtcxE" to="i6s:3BBZ43THufE" resolve="statements" />
                       </node>
+                    </node>
+                    <node concept="2YIFZM" id="7K_nJtgrGVI" role="37wK5m">
+                      <ref role="37wK5l" to="w95y:7K_nJtgr_hu" resolve="empty" />
+                      <ref role="1Pybhc" to="w95y:7K_nJtgr_fk" resolve="TransformState" />
                     </node>
                   </node>
                 </node>

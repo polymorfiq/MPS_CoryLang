@@ -16,14 +16,19 @@ import jetbrains.mps.smodel.adapter.ids.PrimitiveTypeId;
 import jetbrains.mps.smodel.adapter.ids.MetaIdFactory;
 
 public class StructureAspectDescriptor extends BaseStructureAspectDescriptor {
+  /*package*/ final ConceptDescriptor myConceptAnnotation = createDescriptorForAnnotation();
   /*package*/ final ConceptDescriptor myConceptConst = createDescriptorForConst();
   /*package*/ final ConceptDescriptor myConceptEmptyStatement = createDescriptorForEmptyStatement();
+  /*package*/ final ConceptDescriptor myConceptExportAnnotation = createDescriptorForExportAnnotation();
   /*package*/ final ConceptDescriptor myConceptExpression = createDescriptorForExpression();
   /*package*/ final ConceptDescriptor myConceptF32 = createDescriptorForF32();
   /*package*/ final ConceptDescriptor myConceptF64 = createDescriptorForF64();
+  /*package*/ final ConceptDescriptor myConceptFuncCall = createDescriptorForFuncCall();
   /*package*/ final ConceptDescriptor myConceptFunction = createDescriptorForFunction();
   /*package*/ final ConceptDescriptor myConceptI32 = createDescriptorForI32();
   /*package*/ final ConceptDescriptor myConceptI64 = createDescriptorForI64();
+  /*package*/ final ConceptDescriptor myConceptImport = createDescriptorForImport();
+  /*package*/ final ConceptDescriptor myConceptLabel = createDescriptorForLabel();
   /*package*/ final ConceptDescriptor myConceptModule = createDescriptorForModule();
   /*package*/ final ConceptDescriptor myConceptModuleBodyElem = createDescriptorForModuleBodyElem();
   /*package*/ final ConceptDescriptor myConceptName = createDescriptorForName();
@@ -46,29 +51,39 @@ public class StructureAspectDescriptor extends BaseStructureAspectDescriptor {
 
   @Override
   public Collection<ConceptDescriptor> getDescriptors() {
-    return Arrays.asList(myConceptConst, myConceptEmptyStatement, myConceptExpression, myConceptF32, myConceptF64, myConceptFunction, myConceptI32, myConceptI64, myConceptModule, myConceptModuleBodyElem, myConceptName, myConceptParamOrResult, myConceptStatement, myConceptType, myConceptValue);
+    return Arrays.asList(myConceptAnnotation, myConceptConst, myConceptEmptyStatement, myConceptExportAnnotation, myConceptExpression, myConceptF32, myConceptF64, myConceptFuncCall, myConceptFunction, myConceptI32, myConceptI64, myConceptImport, myConceptLabel, myConceptModule, myConceptModuleBodyElem, myConceptName, myConceptParamOrResult, myConceptStatement, myConceptType, myConceptValue);
   }
 
   @Override
   @Nullable
   public ConceptDescriptor getDescriptor(SConceptId id) {
     switch (myIndexSwitch.index(id)) {
+      case LanguageConceptSwitch.Annotation:
+        return myConceptAnnotation;
       case LanguageConceptSwitch.Const:
         return myConceptConst;
       case LanguageConceptSwitch.EmptyStatement:
         return myConceptEmptyStatement;
+      case LanguageConceptSwitch.ExportAnnotation:
+        return myConceptExportAnnotation;
       case LanguageConceptSwitch.Expression:
         return myConceptExpression;
       case LanguageConceptSwitch.F32:
         return myConceptF32;
       case LanguageConceptSwitch.F64:
         return myConceptF64;
+      case LanguageConceptSwitch.FuncCall:
+        return myConceptFuncCall;
       case LanguageConceptSwitch.Function:
         return myConceptFunction;
       case LanguageConceptSwitch.I32:
         return myConceptI32;
       case LanguageConceptSwitch.I64:
         return myConceptI64;
+      case LanguageConceptSwitch.Import:
+        return myConceptImport;
+      case LanguageConceptSwitch.Label:
+        return myConceptLabel;
       case LanguageConceptSwitch.Module:
         return myConceptModule;
       case LanguageConceptSwitch.ModuleBodyElem:
@@ -97,6 +112,13 @@ public class StructureAspectDescriptor extends BaseStructureAspectDescriptor {
     return myIndexSwitch.index(c);
   }
 
+  private static ConceptDescriptor createDescriptorForAnnotation() {
+    ConceptDescriptorBuilder2 b = new ConceptDescriptorBuilder2("CoryLang", "Annotation", 0xbe6061dd252a45b8L, 0x9db81233f2660809L, 0x7c255ef7505d9992L);
+    b.class_(false, true, false);
+    b.origin("r:49f73168-bdae-44eb-95b8-66b51141f222(CoryLang.structure)/8945660651139602834");
+    b.version(3);
+    return b.create();
+  }
   private static ConceptDescriptor createDescriptorForConst() {
     ConceptDescriptorBuilder2 b = new ConceptDescriptorBuilder2("CoryLang", "Const", 0xbe6061dd252a45b8L, 0x9db81233f2660809L, 0x39e7fc40f9b5e373L);
     b.class_(false, false, false);
@@ -114,8 +136,19 @@ public class StructureAspectDescriptor extends BaseStructureAspectDescriptor {
     b.class_(false, false, false);
     // extends: CoryLang.structure.Statement
     b.super_(0xbe6061dd252a45b8L, 0x9db81233f2660809L, 0x39e7fc40f9b5e3e7L);
+    b.parent(0xbe6061dd252a45b8L, 0x9db81233f2660809L, 0x39e7fc40f9b65bcbL);
     b.origin("r:49f73168-bdae-44eb-95b8-66b51141f222(CoryLang.structure)/4172580935779607556");
     b.version(3);
+    return b.create();
+  }
+  private static ConceptDescriptor createDescriptorForExportAnnotation() {
+    ConceptDescriptorBuilder2 b = new ConceptDescriptorBuilder2("CoryLang", "ExportAnnotation", 0xbe6061dd252a45b8L, 0x9db81233f2660809L, 0x7c255ef7505d9a8bL);
+    b.class_(false, false, false);
+    // extends: CoryLang.structure.Annotation
+    b.super_(0xbe6061dd252a45b8L, 0x9db81233f2660809L, 0x7c255ef7505d9992L);
+    b.origin("r:49f73168-bdae-44eb-95b8-66b51141f222(CoryLang.structure)/8945660651139603083");
+    b.version(3);
+    b.alias("@export");
     return b.create();
   }
   private static ConceptDescriptor createDescriptorForExpression() {
@@ -147,6 +180,18 @@ public class StructureAspectDescriptor extends BaseStructureAspectDescriptor {
     b.alias("f64");
     return b.create();
   }
+  private static ConceptDescriptor createDescriptorForFuncCall() {
+    ConceptDescriptorBuilder2 b = new ConceptDescriptorBuilder2("CoryLang", "FuncCall", 0xbe6061dd252a45b8L, 0x9db81233f2660809L, 0x7c255ef750754c74L);
+    b.class_(false, false, false);
+    // extends: CoryLang.structure.Expression
+    b.super_(0xbe6061dd252a45b8L, 0x9db81233f2660809L, 0x39e7fc40f9b5e3e6L);
+    b.origin("r:49f73168-bdae-44eb-95b8-66b51141f222(CoryLang.structure)/8945660651141155956");
+    b.version(3);
+    b.aggregate("name", 0x7c255ef750754d34L).target(0xbe6061dd252a45b8L, 0x9db81233f2660809L, 0x7c255ef74f4f0932L).optional(false).ordered(true).multiple(false).origin("8945660651141156148").done();
+    b.aggregate("params", 0x7c255ef750754d5fL).target(0xbe6061dd252a45b8L, 0x9db81233f2660809L, 0x39e7fc40f9b5e369L).optional(true).ordered(true).multiple(true).origin("8945660651141156191").done();
+    b.alias("call");
+    return b.create();
+  }
   private static ConceptDescriptor createDescriptorForFunction() {
     ConceptDescriptorBuilder2 b = new ConceptDescriptorBuilder2("CoryLang", "Function", 0xbe6061dd252a45b8L, 0x9db81233f2660809L, 0x39e7fc40f9b5e368L);
     b.class_(false, false, false);
@@ -156,6 +201,7 @@ public class StructureAspectDescriptor extends BaseStructureAspectDescriptor {
     b.origin("r:49f73168-bdae-44eb-95b8-66b51141f222(CoryLang.structure)/4172580935779607400");
     b.version(3);
     b.aggregate("name", 0x7c255ef74f4f0c5cL).target(0xbe6061dd252a45b8L, 0x9db81233f2660809L, 0x7c255ef74f4f0932L).optional(false).ordered(true).multiple(false).origin("8945660651121871964").done();
+    b.aggregate("annotations", 0x7c255ef7505e5e61L).target(0xbe6061dd252a45b8L, 0x9db81233f2660809L, 0x7c255ef7505d9992L).optional(true).ordered(true).multiple(true).origin("8945660651139653217").done();
     b.aggregate("params", 0x7c255ef74f4f0836L).target(0xbe6061dd252a45b8L, 0x9db81233f2660809L, 0x7c255ef74f4f0792L).optional(true).ordered(true).multiple(true).origin("8945660651121870902").done();
     b.aggregate("results", 0x7c255ef74f4f0875L).target(0xbe6061dd252a45b8L, 0x9db81233f2660809L, 0x7c255ef74f4f0792L).optional(true).ordered(true).multiple(true).origin("8945660651121870965").done();
     b.aggregate("body", 0x39e7fc40f9b5ff91L).target(0xbe6061dd252a45b8L, 0x9db81233f2660809L, 0x39e7fc40f9b5e3e7L).optional(true).ordered(true).multiple(true).origin("4172580935779614609").done();
@@ -180,6 +226,32 @@ public class StructureAspectDescriptor extends BaseStructureAspectDescriptor {
     b.origin("r:49f73168-bdae-44eb-95b8-66b51141f222(CoryLang.structure)/4172580935779607405");
     b.version(3);
     b.alias("i64");
+    return b.create();
+  }
+  private static ConceptDescriptor createDescriptorForImport() {
+    ConceptDescriptorBuilder2 b = new ConceptDescriptorBuilder2("CoryLang", "Import", 0xbe6061dd252a45b8L, 0x9db81233f2660809L, 0x7c255ef750704824L);
+    b.class_(false, false, false);
+    // extends: CoryLang.structure.Expression
+    b.super_(0xbe6061dd252a45b8L, 0x9db81233f2660809L, 0x39e7fc40f9b5e3e6L);
+    b.parent(0xbe6061dd252a45b8L, 0x9db81233f2660809L, 0x39e7fc40f9b65bcbL);
+    b.origin("r:49f73168-bdae-44eb-95b8-66b51141f222(CoryLang.structure)/8945660651140827172");
+    b.version(3);
+    b.property("module_name", 0x7c255ef750704e14L).type(PrimitiveTypeId.STRING).origin("8945660651140828692").done();
+    b.property("func_name", 0x7c255ef750704e3eL).type(PrimitiveTypeId.STRING).origin("8945660651140828734").done();
+    b.aggregate("name", 0x7c255ef750704da8L).target(0xbe6061dd252a45b8L, 0x9db81233f2660809L, 0x7c255ef74f4f0932L).optional(false).ordered(true).multiple(false).origin("8945660651140828584").done();
+    b.aggregate("params", 0x7c255ef750704960L).target(0xbe6061dd252a45b8L, 0x9db81233f2660809L, 0x7c255ef74f4f0792L).optional(true).ordered(true).multiple(true).origin("8945660651140827488").done();
+    b.aggregate("results", 0x7c255ef7507049b9L).target(0xbe6061dd252a45b8L, 0x9db81233f2660809L, 0x7c255ef74f4f0792L).optional(true).ordered(true).multiple(true).origin("8945660651140827577").done();
+    b.alias("import");
+    return b.create();
+  }
+  private static ConceptDescriptor createDescriptorForLabel() {
+    ConceptDescriptorBuilder2 b = new ConceptDescriptorBuilder2("CoryLang", "Label", 0xbe6061dd252a45b8L, 0x9db81233f2660809L, 0x7c255ef750768d1aL);
+    b.class_(false, false, false);
+    // extends: CoryLang.structure.Value
+    b.super_(0xbe6061dd252a45b8L, 0x9db81233f2660809L, 0x39e7fc40f9b5e369L);
+    b.origin("r:49f73168-bdae-44eb-95b8-66b51141f222(CoryLang.structure)/8945660651141238042");
+    b.version(3);
+    b.aggregate("name", 0x7c255ef750768d4dL).target(0xbe6061dd252a45b8L, 0x9db81233f2660809L, 0x7c255ef74f4f0932L).optional(false).ordered(true).multiple(false).origin("8945660651141238093").done();
     return b.create();
   }
   private static ConceptDescriptor createDescriptorForModule() {
@@ -214,7 +286,7 @@ public class StructureAspectDescriptor extends BaseStructureAspectDescriptor {
     b.origin("r:49f73168-bdae-44eb-95b8-66b51141f222(CoryLang.structure)/8945660651121870738");
     b.version(3);
     b.property("type", 0x7c255ef74f4f0801L).type(MetaIdFactory.dataTypeId(0xbe6061dd252a45b8L, 0x9db81233f2660809L, 0x7c255ef74f4f054cL)).origin("8945660651121870849").done();
-    b.aggregate("name", 0x7c255ef74f4f09a5L).target(0xbe6061dd252a45b8L, 0x9db81233f2660809L, 0x7c255ef74f4f0932L).optional(false).ordered(true).multiple(false).origin("8945660651121871269").done();
+    b.aggregate("label", 0x7c255ef74f4f09a5L).target(0xbe6061dd252a45b8L, 0x9db81233f2660809L, 0x7c255ef750768d1aL).optional(false).ordered(true).multiple(false).origin("8945660651121871269").done();
     return b.create();
   }
   private static ConceptDescriptor createDescriptorForStatement() {

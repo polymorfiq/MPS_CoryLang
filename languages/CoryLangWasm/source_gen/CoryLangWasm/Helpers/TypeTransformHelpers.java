@@ -12,8 +12,8 @@ import jetbrains.mps.lang.smodel.generator.smodelAdapter.SNodeOperations;
 import jetbrains.mps.lang.smodel.generator.smodelAdapter.SConceptOperations;
 import jetbrains.mps.smodel.adapter.structure.MetaAdapterFactory;
 import jetbrains.mps.lang.smodel.generator.smodelAdapter.SLinkOperations;
-import jetbrains.mps.internal.collections.runtime.ListSequence;
 import jetbrains.mps.lang.smodel.generator.smodelAdapter.SPropertyOperations;
+import jetbrains.mps.internal.collections.runtime.ListSequence;
 import jetbrains.mps.lang.smodel.generator.smodelAdapter.SEnumOperations;
 import jetbrains.mps.lang.smodel.EnumerationLiteralsIndex;
 import org.jetbrains.mps.openapi.language.SConcept;
@@ -21,55 +21,107 @@ import org.jetbrains.mps.openapi.language.SContainmentLink;
 import org.jetbrains.mps.openapi.language.SProperty;
 
 public class TypeTransformHelpers {
-  public static Iterable<SNode> typeDeclarations(Iterable<SNode> nodes) {
+  public static Iterable<SNode> typeDeclarations(Iterable<SNode> nodes, TransformState state) {
     Deque<SNode> outputs = LinkedListSequence.fromLinkedList(new LinkedList<SNode>());
 
     for (SNode node : Sequence.fromIterable(nodes)) {
       SAbstractConcept cncpt = SNodeOperations.getConcept(node);
       boolean noneMatched = true;
+      if (noneMatched && SConceptOperations.isSubConceptOf(cncpt, CONCEPTS.Import$A3)) {
+        noneMatched = false;
+        SNode imp = SNodeOperations.as(node, CONCEPTS.Import$A3);
+        SNode fType = SConceptOperations.createNewNode(MetaAdapterFactory.getConcept(0xf0ceec7784bd4104L, 0xb53284a17dffbb8aL, 0x601bfff8ed828ebaL, "WebAssembly.structure.FuncType"));
+        SLinkOperations.setTarget(fType, LINKS.params$g2Jl, toWasmTypeResultType(SLinkOperations.getChildren(imp, LINKS.params$Utp1), state));
+        SLinkOperations.setTarget(fType, LINKS.results$g3dn, toWasmTypeResultType(SLinkOperations.getChildren(imp, LINKS.results$XRmy), state));
+        LinkedListSequence.fromLinkedListNew(outputs).addElement(fType);
+
+      }
       if (noneMatched && SConceptOperations.isSubConceptOf(cncpt, CONCEPTS.Function$GL)) {
         noneMatched = false;
         SNode func = SNodeOperations.as(node, CONCEPTS.Function$GL);
         SNode functype = SConceptOperations.createNewNode(MetaAdapterFactory.getConcept(0xf0ceec7784bd4104L, 0xb53284a17dffbb8aL, 0x601bfff8ed828ebaL, "WebAssembly.structure.FuncType"));
 
-        SNode params = toWasmTypeResultType(SLinkOperations.getChildren(func, LINKS.params$oyM_));
-        SNode results = toWasmTypeResultType(SLinkOperations.getChildren(func, LINKS.results$pf8y));
+        SNode params = toWasmTypeResultType(SLinkOperations.getChildren(func, LINKS.params$oyM_), state);
+        SNode results = toWasmTypeResultType(SLinkOperations.getChildren(func, LINKS.results$pf8y), state);
 
         SNode fType = SConceptOperations.createNewNode(MetaAdapterFactory.getConcept(0xf0ceec7784bd4104L, 0xb53284a17dffbb8aL, 0x601bfff8ed828ebaL, "WebAssembly.structure.FuncType"));
         SLinkOperations.setTarget(fType, LINKS.params$g2Jl, params);
         SLinkOperations.setTarget(fType, LINKS.results$g3dn, results);
-        LinkedListSequence.fromLinkedListNew(outputs).pushElement(fType);
+        LinkedListSequence.fromLinkedListNew(outputs).addElement(fType);
 
       }
     }
 
-    return ListSequence.fromList(LinkedListSequence.fromLinkedListNew(outputs).toList()).reversedList();
+    return outputs;
   }
 
-  public static Iterable<SNode> typeIdxDeclaration(Iterable<SNode> nodes) {
+  public static Iterable<SNode> funcsDeclarations(Iterable<SNode> nodes, TransformState state) {
     Deque<SNode> outputs = LinkedListSequence.fromLinkedList(new LinkedList<SNode>());
     int currIdx = 0;
 
     for (SNode node : Sequence.fromIterable(nodes)) {
       SAbstractConcept cncpt = SNodeOperations.getConcept(node);
       boolean noneMatched = true;
-      if (noneMatched && SConceptOperations.isSubConceptOf(cncpt, CONCEPTS.Function$GL)) {
+      if (noneMatched && SConceptOperations.isSubConceptOf(cncpt, CONCEPTS.Import$A3)) {
         noneMatched = false;
-        SNode typeIdx = SConceptOperations.createNewNode(MetaAdapterFactory.getConcept(0xf0ceec7784bd4104L, 0xb53284a17dffbb8aL, 0x601bfff8ee1ef534L, "WebAssembly.structure.TypeIdx"));
-
-        SPropertyOperations.assign(typeIdx, PROPS.value$pMNX, currIdx);
-        LinkedListSequence.fromLinkedListNew(outputs).pushElement(typeIdx);
-
-
         currIdx += 1;
 
       }
     }
 
-    return ListSequence.fromList(LinkedListSequence.fromLinkedListNew(outputs).toList()).reversedList();
+    for (SNode node : Sequence.fromIterable(nodes)) {
+      SAbstractConcept cncpt1 = SNodeOperations.getConcept(node);
+      boolean noneMatched1 = true;
+      if (noneMatched1 && SConceptOperations.isSubConceptOf(cncpt1, CONCEPTS.Function$GL)) {
+        noneMatched1 = false;
+        SNode typeIdx = SConceptOperations.createNewNode(MetaAdapterFactory.getConcept(0xf0ceec7784bd4104L, 0xb53284a17dffbb8aL, 0x601bfff8ee1ef534L, "WebAssembly.structure.TypeIdx"));
+        SPropertyOperations.assign(typeIdx, PROPS.value$pMNX, currIdx);
+        LinkedListSequence.fromLinkedListNew(outputs).addElement(typeIdx);
+        currIdx += 1;
+
+      }
+    }
+
+    return outputs;
   }
 
-  public static Iterable<SNode> codeDeclarations(Iterable<SNode> nodes) {
+  public static Iterable<SNode> importsDeclarations(Iterable<SNode> nodes, TransformState state) {
+    Deque<SNode> outputs = LinkedListSequence.fromLinkedList(new LinkedList<SNode>());
+    int currIdx = 0;
+
+    for (SNode node : Sequence.fromIterable(nodes)) {
+      SAbstractConcept cncpt = SNodeOperations.getConcept(node);
+      boolean noneMatched = true;
+      if (noneMatched && SConceptOperations.isSubConceptOf(cncpt, CONCEPTS.Import$A3)) {
+        noneMatched = false;
+        SNode imp = SNodeOperations.as(node, CONCEPTS.Import$A3);
+
+        SNode typeIdxDesc = SConceptOperations.createNewNode(MetaAdapterFactory.getConcept(0xf0ceec7784bd4104L, 0xb53284a17dffbb8aL, 0x601bfff8ee1f74b2L, "WebAssembly.structure.ImportFuncDesc"));
+        SNode typeIdx = SConceptOperations.createNewNode(MetaAdapterFactory.getConcept(0xf0ceec7784bd4104L, 0xb53284a17dffbb8aL, 0x601bfff8ee1ef534L, "WebAssembly.structure.TypeIdx"));
+        SPropertyOperations.assign(typeIdx, PROPS.value$pMNX, currIdx);
+        SLinkOperations.setTarget(typeIdxDesc, LINKS.typeidx$5hWY, typeIdx);
+
+        SNode wasmImport = SConceptOperations.createNewNode(MetaAdapterFactory.getConcept(0xf0ceec7784bd4104L, 0xb53284a17dffbb8aL, 0x601bfff8ee1ef511L, "WebAssembly.structure.Import"));
+        SPropertyOperations.assign(wasmImport, PROPS.mod$mYmx, SPropertyOperations.getString(imp, PROPS.module_name$INIV));
+        SPropertyOperations.assign(wasmImport, PROPS.nm$mYOz, SPropertyOperations.getString(imp, PROPS.func_name$LE24));
+        SLinkOperations.setTarget(wasmImport, LINKS.desc$Gh0d, typeIdxDesc);
+
+        LinkedListSequence.fromLinkedListNew(outputs).addElement(wasmImport);
+        currIdx += 1;
+
+      }
+      if (noneMatched && SConceptOperations.isSubConceptOf(cncpt, CONCEPTS.Function$GL)) {
+        noneMatched = false;
+        currIdx += 1;
+
+      }
+    }
+
+    return outputs;
+  }
+
+
+  public static Iterable<SNode> codeDeclarations(Iterable<SNode> nodes, final TransformState state) {
     Deque<SNode> outputs = LinkedListSequence.fromLinkedList(new LinkedList<SNode>());
 
     for (SNode node : Sequence.fromIterable(nodes)) {
@@ -85,21 +137,19 @@ public class TypeTransformHelpers {
         SLinkOperations.setTarget(SLinkOperations.getTarget(funcCode, LINKS.func$aeX1), LINKS.expr$w151, SConceptOperations.createNewNode(MetaAdapterFactory.getConcept(0xf0ceec7784bd4104L, 0xb53284a17dffbb8aL, 0x39e7fc40f4f6eb37L, "WebAssembly.structure.Expr")));
 
         ListSequence.fromList(SLinkOperations.getChildren(func, LINKS.body$vjN8)).visitAll((stmt) -> {
-          Iterable<SNode> instrs = InstrHelper.nodeToInstr(stmt);
-          ListSequence.fromList(SLinkOperations.getChildren(SLinkOperations.getTarget(SLinkOperations.getTarget(funcCode, LINKS.func$aeX1), LINKS.expr$w151), LINKS.instrs$LGLM)).addSequence(Sequence.fromIterable(instrs));
+          Iterable<SNode> instrs = InstrHelper.nodeToInstr(stmt, state);
+          Sequence.fromIterable(instrs).visitAll((instr) -> ListSequence.fromList(SLinkOperations.getChildren(SLinkOperations.getTarget(SLinkOperations.getTarget(funcCode, LINKS.func$aeX1), LINKS.expr$w151), LINKS.instrs$LGLM)).addElement(instr));
         });
 
-        LinkedListSequence.fromLinkedListNew(outputs).pushElement(funcCode);
+        LinkedListSequence.fromLinkedListNew(outputs).addElement(funcCode);
 
       }
     }
 
-    return ListSequence.fromList(LinkedListSequence.fromLinkedListNew(outputs).toList()).reversedList();
+    return outputs;
   }
 
-
-
-  public static SNode toWasmTypeResultType(Iterable<SNode> args) {
+  public static SNode toWasmTypeResultType(Iterable<SNode> args, TransformState state) {
     SNode result = SConceptOperations.createNewNode(MetaAdapterFactory.getConcept(0xf0ceec7784bd4104L, 0xb53284a17dffbb8aL, 0x601bfff8ed7aee8aL, "WebAssembly.structure.ResultType"));
 
     for (SNode paramOrResult : Sequence.fromIterable(args)) {
@@ -129,14 +179,19 @@ public class TypeTransformHelpers {
   private static final EnumerationLiteralsIndex enumSwitchIndex = EnumerationLiteralsIndex.build(0xbe6061dd252a45b8L, 0x9db81233f2660809L, 0x7c255ef74f4f054cL, 0x7c255ef74f4f054dL, 0x7c255ef74f4f0580L, 0x7c255ef74f4f058dL, 0x7c255ef74f4f05a5L);
 
   private static final class CONCEPTS {
+    /*package*/ static final SConcept Import$A3 = MetaAdapterFactory.getConcept(0xbe6061dd252a45b8L, 0x9db81233f2660809L, 0x7c255ef750704824L, "CoryLang.structure.Import");
     /*package*/ static final SConcept Function$GL = MetaAdapterFactory.getConcept(0xbe6061dd252a45b8L, 0x9db81233f2660809L, 0x39e7fc40f9b5e368L, "CoryLang.structure.Function");
   }
 
   private static final class LINKS {
+    /*package*/ static final SContainmentLink params$g2Jl = MetaAdapterFactory.getContainmentLink(0xf0ceec7784bd4104L, 0xb53284a17dffbb8aL, 0x601bfff8ed828ebaL, 0x601bfff8ed828ebeL, "params");
+    /*package*/ static final SContainmentLink params$Utp1 = MetaAdapterFactory.getContainmentLink(0xbe6061dd252a45b8L, 0x9db81233f2660809L, 0x7c255ef750704824L, 0x7c255ef750704960L, "params");
+    /*package*/ static final SContainmentLink results$g3dn = MetaAdapterFactory.getContainmentLink(0xf0ceec7784bd4104L, 0xb53284a17dffbb8aL, 0x601bfff8ed828ebaL, 0x601bfff8ed828ec0L, "results");
+    /*package*/ static final SContainmentLink results$XRmy = MetaAdapterFactory.getContainmentLink(0xbe6061dd252a45b8L, 0x9db81233f2660809L, 0x7c255ef750704824L, 0x7c255ef7507049b9L, "results");
     /*package*/ static final SContainmentLink params$oyM_ = MetaAdapterFactory.getContainmentLink(0xbe6061dd252a45b8L, 0x9db81233f2660809L, 0x39e7fc40f9b5e368L, 0x7c255ef74f4f0836L, "params");
     /*package*/ static final SContainmentLink results$pf8y = MetaAdapterFactory.getContainmentLink(0xbe6061dd252a45b8L, 0x9db81233f2660809L, 0x39e7fc40f9b5e368L, 0x7c255ef74f4f0875L, "results");
-    /*package*/ static final SContainmentLink params$g2Jl = MetaAdapterFactory.getContainmentLink(0xf0ceec7784bd4104L, 0xb53284a17dffbb8aL, 0x601bfff8ed828ebaL, 0x601bfff8ed828ebeL, "params");
-    /*package*/ static final SContainmentLink results$g3dn = MetaAdapterFactory.getContainmentLink(0xf0ceec7784bd4104L, 0xb53284a17dffbb8aL, 0x601bfff8ed828ebaL, 0x601bfff8ed828ec0L, "results");
+    /*package*/ static final SContainmentLink typeidx$5hWY = MetaAdapterFactory.getContainmentLink(0xf0ceec7784bd4104L, 0xb53284a17dffbb8aL, 0x601bfff8ee1f74b2L, 0x601bfff8ee1f74b4L, "typeidx");
+    /*package*/ static final SContainmentLink desc$Gh0d = MetaAdapterFactory.getContainmentLink(0xf0ceec7784bd4104L, 0xb53284a17dffbb8aL, 0x601bfff8ee1ef511L, 0x601bfff8ee1f74d6L, "desc");
     /*package*/ static final SContainmentLink func$aeX1 = MetaAdapterFactory.getContainmentLink(0xf0ceec7784bd4104L, 0xb53284a17dffbb8aL, 0x39e7fc40f545b99aL, 0x39e7fc40f545b99fL, "func");
     /*package*/ static final SContainmentLink expr$w151 = MetaAdapterFactory.getContainmentLink(0xf0ceec7784bd4104L, 0xb53284a17dffbb8aL, 0x39e7fc40f543f0f3L, 0x39e7fc40f543f0f8L, "expr");
     /*package*/ static final SContainmentLink body$vjN8 = MetaAdapterFactory.getContainmentLink(0xbe6061dd252a45b8L, 0x9db81233f2660809L, 0x39e7fc40f9b5e368L, 0x39e7fc40f9b5ff91L, "body");
@@ -146,6 +201,10 @@ public class TypeTransformHelpers {
 
   private static final class PROPS {
     /*package*/ static final SProperty value$pMNX = MetaAdapterFactory.getProperty(0xf0ceec7784bd4104L, 0xb53284a17dffbb8aL, 0x601bfff8ee1ef534L, 0x601bfff8ee1ef535L, "value");
+    /*package*/ static final SProperty mod$mYmx = MetaAdapterFactory.getProperty(0xf0ceec7784bd4104L, 0xb53284a17dffbb8aL, 0x601bfff8ee1ef511L, 0x601bfff8ee1ef516L, "mod");
+    /*package*/ static final SProperty module_name$INIV = MetaAdapterFactory.getProperty(0xbe6061dd252a45b8L, 0x9db81233f2660809L, 0x7c255ef750704824L, 0x7c255ef750704e14L, "module_name");
+    /*package*/ static final SProperty nm$mYOz = MetaAdapterFactory.getProperty(0xf0ceec7784bd4104L, 0xb53284a17dffbb8aL, 0x601bfff8ee1ef511L, 0x601bfff8ee1ef518L, "nm");
+    /*package*/ static final SProperty func_name$LE24 = MetaAdapterFactory.getProperty(0xbe6061dd252a45b8L, 0x9db81233f2660809L, 0x7c255ef750704824L, 0x7c255ef750704e3eL, "func_name");
     /*package*/ static final SProperty valtype$$P7n = MetaAdapterFactory.getProperty(0xf0ceec7784bd4104L, 0xb53284a17dffbb8aL, 0x601bfff8ed7d6e6cL, 0x601bfff8ed7d6e72L, "valtype");
     /*package*/ static final SProperty type$RW2q = MetaAdapterFactory.getProperty(0xbe6061dd252a45b8L, 0x9db81233f2660809L, 0x7c255ef74f4f0792L, 0x7c255ef74f4f0801L, "type");
   }

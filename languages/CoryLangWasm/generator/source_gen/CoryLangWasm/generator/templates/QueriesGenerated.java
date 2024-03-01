@@ -10,6 +10,7 @@ import org.jetbrains.mps.openapi.model.SNode;
 import jetbrains.mps.generator.template.SourceSubstituteMacroNodesContext;
 import CoryLangWasm.Helpers.TypeTransformHelpers;
 import jetbrains.mps.lang.smodel.generator.smodelAdapter.SLinkOperations;
+import CoryLangWasm.Helpers.TransformState;
 import java.util.Map;
 import jetbrains.mps.generator.impl.query.SourceNodesQuery;
 import java.util.HashMap;
@@ -33,18 +34,22 @@ public class QueriesGenerated extends QueryProviderBase {
     return SPropertyOperations.getString(_context.getNode(), PROPS.name$MnvL);
   }
   public static Iterable<SNode> sourceNodesQuery_1_0(final SourceSubstituteMacroNodesContext _context) {
-    return TypeTransformHelpers.typeDeclarations(SLinkOperations.getChildren(_context.getNode(), LINKS.statements$E5QS));
+    return TypeTransformHelpers.typeDeclarations(SLinkOperations.getChildren(_context.getNode(), LINKS.statements$E5QS), TransformState.empty());
   }
   public static Iterable<SNode> sourceNodesQuery_1_1(final SourceSubstituteMacroNodesContext _context) {
-    return TypeTransformHelpers.typeIdxDeclaration(SLinkOperations.getChildren(_context.getNode(), LINKS.statements$E5QS));
+    return TypeTransformHelpers.importsDeclarations(SLinkOperations.getChildren(_context.getNode(), LINKS.statements$E5QS), TransformState.empty());
   }
   public static Iterable<SNode> sourceNodesQuery_1_2(final SourceSubstituteMacroNodesContext _context) {
-    return TypeTransformHelpers.codeDeclarations(SLinkOperations.getChildren(_context.getNode(), LINKS.statements$E5QS));
+    return TypeTransformHelpers.funcsDeclarations(SLinkOperations.getChildren(_context.getNode(), LINKS.statements$E5QS), TransformState.empty());
+  }
+  public static Iterable<SNode> sourceNodesQuery_1_3(final SourceSubstituteMacroNodesContext _context) {
+    return TypeTransformHelpers.codeDeclarations(SLinkOperations.getChildren(_context.getNode(), LINKS.statements$E5QS), TransformState.empty());
   }
   private final Map<String, SourceNodesQuery> snsqMethods = new HashMap<String, SourceNodesQuery>();
   {
     int i = 0;
     snsqMethods.put("8945660651122197769", new SNsQ(i++));
+    snsqMethods.put("8945660651141998964", new SNsQ(i++));
     snsqMethods.put("8945660651122328277", new SNsQ(i++));
     snsqMethods.put("8945660651122481601", new SNsQ(i++));
   }
@@ -68,6 +73,8 @@ public class QueriesGenerated extends QueryProviderBase {
           return IterableUtil.asCollection(QueriesGenerated.sourceNodesQuery_1_1(ctx));
         case 2:
           return IterableUtil.asCollection(QueriesGenerated.sourceNodesQuery_1_2(ctx));
+        case 3:
+          return IterableUtil.asCollection(QueriesGenerated.sourceNodesQuery_1_3(ctx));
         default:
           throw new GenerationFailureException(String.format("Inconsistent QueriesGenerated: there's no method for query %s (key: #%d)", ctx.getTemplateReference(), methodKey));
       }

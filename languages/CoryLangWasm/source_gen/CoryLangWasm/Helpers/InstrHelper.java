@@ -10,54 +10,73 @@ import org.jetbrains.mps.openapi.language.SAbstractConcept;
 import jetbrains.mps.lang.smodel.generator.smodelAdapter.SNodeOperations;
 import jetbrains.mps.lang.smodel.generator.smodelAdapter.SConceptOperations;
 import jetbrains.mps.internal.collections.runtime.Sequence;
-import jetbrains.mps.internal.collections.runtime.ListSequence;
 import jetbrains.mps.lang.smodel.generator.smodelAdapter.SPropertyOperations;
 import jetbrains.mps.lang.smodel.generator.smodelAdapter.SEnumOperations;
 import jetbrains.mps.smodel.adapter.structure.MetaAdapterFactory;
+import jetbrains.mps.lang.smodel.generator.smodelAdapter.SLinkOperations;
+import jetbrains.mps.internal.collections.runtime.ListSequence;
 import org.jetbrains.mps.openapi.language.SConcept;
 import org.jetbrains.mps.openapi.language.SProperty;
+import org.jetbrains.mps.openapi.language.SContainmentLink;
 
 public class InstrHelper {
-  public static Iterable<SNode> nodeToInstr(SNode input) {
+  public static Iterable<SNode> nodeToInstr(SNode input, TransformState state) {
     final Deque<SNode> outputs = LinkedListSequence.fromLinkedList(new LinkedList<SNode>());
 
     SAbstractConcept cncpt = SNodeOperations.getConcept(input);
     boolean noneMatched = true;
     if (noneMatched && SConceptOperations.isSubConceptOf(cncpt, CONCEPTS.Const$Wh)) {
       noneMatched = false;
-      Sequence.fromIterable(instrForConst(SNodeOperations.as(input, CONCEPTS.Const$Wh))).visitAll((instr) -> LinkedListSequence.fromLinkedListNew(outputs).pushElement(instr));
-
+      Sequence.fromIterable(instrForConst(SNodeOperations.as(input, CONCEPTS.Const$Wh), state)).visitAll((instr) -> LinkedListSequence.fromLinkedListNew(outputs).addElement(instr));
+    }
+    if (noneMatched && SConceptOperations.isSubConceptOf(cncpt, CONCEPTS.FuncCall$TC)) {
+      noneMatched = false;
+      Sequence.fromIterable(instrForCall(SNodeOperations.as(input, CONCEPTS.FuncCall$TC), state)).visitAll((instr) -> LinkedListSequence.fromLinkedListNew(outputs).addElement(instr));
     }
 
-    return ListSequence.fromList(LinkedListSequence.fromLinkedListNew(outputs).toList()).reversedList();
+    return outputs;
   }
 
-  public static Iterable<SNode> instrForConst(SNode val) {
+  public static Iterable<SNode> instrForConst(SNode val, TransformState state) {
     Deque<SNode> outputs = LinkedListSequence.fromLinkedList(new LinkedList<SNode>());
 
     if (SPropertyOperations.getEnum(val, PROPS.valType$kiC8) == SEnumOperations.getMember(MetaAdapterFactory.getEnumeration(0xbe6061dd252a45b8L, 0x9db81233f2660809L, 0x7c255ef74f4f054cL, "CoryLang.structure.ValueType"), 0x7c255ef74f4f054dL, "i32")) {
       SNode newNode = SConceptOperations.createNewNode(MetaAdapterFactory.getConcept(0xf0ceec7784bd4104L, 0xb53284a17dffbb8aL, 0x39e7fc40f506bb60L, "WebAssembly.structure.I32Const"));
       SPropertyOperations.assign(newNode, PROPS.value$l9MY, Integer.parseInt(SPropertyOperations.getString(val, PROPS.content$As7s)));
-      LinkedListSequence.fromLinkedListNew(outputs).pushElement(newNode);
+      LinkedListSequence.fromLinkedListNew(outputs).addElement(newNode);
     } else if (SPropertyOperations.getEnum(val, PROPS.valType$kiC8) == SEnumOperations.getMember(MetaAdapterFactory.getEnumeration(0xbe6061dd252a45b8L, 0x9db81233f2660809L, 0x7c255ef74f4f054cL, "CoryLang.structure.ValueType"), 0x7c255ef74f4f0580L, "i64")) {
       SNode newNode = SConceptOperations.createNewNode(MetaAdapterFactory.getConcept(0xf0ceec7784bd4104L, 0xb53284a17dffbb8aL, 0x39e7fc40f524766fL, "WebAssembly.structure.I64Const"));
       SPropertyOperations.assign(newNode, PROPS.value$eedi, SPropertyOperations.getString(val, PROPS.content$As7s));
-      LinkedListSequence.fromLinkedListNew(outputs).pushElement(newNode);
+      LinkedListSequence.fromLinkedListNew(outputs).addElement(newNode);
     } else if (SPropertyOperations.getEnum(val, PROPS.valType$kiC8) == SEnumOperations.getMember(MetaAdapterFactory.getEnumeration(0xbe6061dd252a45b8L, 0x9db81233f2660809L, 0x7c255ef74f4f054cL, "CoryLang.structure.ValueType"), 0x7c255ef74f4f058dL, "f32")) {
       SNode newNode = SConceptOperations.createNewNode(MetaAdapterFactory.getConcept(0xf0ceec7784bd4104L, 0xb53284a17dffbb8aL, 0x39e7fc40f50cd7bcL, "WebAssembly.structure.F32Const"));
       SPropertyOperations.assign(newNode, PROPS.value$FF8t, SPropertyOperations.getString(val, PROPS.content$As7s));
-      LinkedListSequence.fromLinkedListNew(outputs).pushElement(newNode);
+      LinkedListSequence.fromLinkedListNew(outputs).addElement(newNode);
     } else if (SPropertyOperations.getEnum(val, PROPS.valType$kiC8) == SEnumOperations.getMember(MetaAdapterFactory.getEnumeration(0xbe6061dd252a45b8L, 0x9db81233f2660809L, 0x7c255ef74f4f054cL, "CoryLang.structure.ValueType"), 0x7c255ef74f4f05a5L, "f64")) {
       SNode newNode = SConceptOperations.createNewNode(MetaAdapterFactory.getConcept(0xf0ceec7784bd4104L, 0xb53284a17dffbb8aL, 0x39e7fc40f514690eL, "WebAssembly.structure.F64Const"));
       SPropertyOperations.assign(newNode, PROPS.value$xr4t, SPropertyOperations.getString(val, PROPS.content$As7s));
-      LinkedListSequence.fromLinkedListNew(outputs).pushElement(newNode);
+      LinkedListSequence.fromLinkedListNew(outputs).addElement(newNode);
     }
 
-    return ListSequence.fromList(LinkedListSequence.fromLinkedListNew(outputs).toList()).reversedList();
+    return outputs;
+  }
+
+  public static Iterable<SNode> instrForCall(SNode call, final TransformState state) {
+    final Deque<SNode> outputs = LinkedListSequence.fromLinkedList(new LinkedList<SNode>());
+    SNode wasmCall = SConceptOperations.createNewNode(MetaAdapterFactory.getConcept(0xf0ceec7784bd4104L, 0xb53284a17dffbb8aL, 0x39e7fc40f6467101L, "WebAssembly.structure.Call"));
+    SNode funcidx = SConceptOperations.createNewNode(MetaAdapterFactory.getConcept(0xf0ceec7784bd4104L, 0xb53284a17dffbb8aL, 0x39e7fc40f52b227aL, "WebAssembly.structure.FuncIdx"));
+    SPropertyOperations.assign(funcidx, PROPS.value$S0Mk, 0);
+    SLinkOperations.setTarget(wasmCall, LINKS.x$eHsN, funcidx);
+
+    ListSequence.fromList(SLinkOperations.getChildren(call, LINKS.params$tnN7)).visitAll((param) -> Sequence.fromIterable(nodeToInstr(param, state)).visitAll((paramInstr) -> LinkedListSequence.fromLinkedListNew(outputs).addElement(paramInstr)));
+
+    LinkedListSequence.fromLinkedListNew(outputs).addElement(wasmCall);
+    return outputs;
   }
 
   private static final class CONCEPTS {
     /*package*/ static final SConcept Const$Wh = MetaAdapterFactory.getConcept(0xbe6061dd252a45b8L, 0x9db81233f2660809L, 0x39e7fc40f9b5e373L, "CoryLang.structure.Const");
+    /*package*/ static final SConcept FuncCall$TC = MetaAdapterFactory.getConcept(0xbe6061dd252a45b8L, 0x9db81233f2660809L, 0x7c255ef750754c74L, "CoryLang.structure.FuncCall");
   }
 
   private static final class PROPS {
@@ -67,5 +86,11 @@ public class InstrHelper {
     /*package*/ static final SProperty value$eedi = MetaAdapterFactory.getProperty(0xf0ceec7784bd4104L, 0xb53284a17dffbb8aL, 0x39e7fc40f524766fL, 0x39e7fc40f5247670L, "value");
     /*package*/ static final SProperty value$FF8t = MetaAdapterFactory.getProperty(0xf0ceec7784bd4104L, 0xb53284a17dffbb8aL, 0x39e7fc40f50cd7bcL, 0x39e7fc40f50cd7bdL, "value");
     /*package*/ static final SProperty value$xr4t = MetaAdapterFactory.getProperty(0xf0ceec7784bd4104L, 0xb53284a17dffbb8aL, 0x39e7fc40f514690eL, 0x39e7fc40f514690fL, "value");
+    /*package*/ static final SProperty value$S0Mk = MetaAdapterFactory.getProperty(0xf0ceec7784bd4104L, 0xb53284a17dffbb8aL, 0x39e7fc40f52b227aL, 0x39e7fc40f52b2288L, "value");
+  }
+
+  private static final class LINKS {
+    /*package*/ static final SContainmentLink x$eHsN = MetaAdapterFactory.getContainmentLink(0xf0ceec7784bd4104L, 0xb53284a17dffbb8aL, 0x39e7fc40f6467101L, 0x39e7fc40f6467103L, "x");
+    /*package*/ static final SContainmentLink params$tnN7 = MetaAdapterFactory.getContainmentLink(0xbe6061dd252a45b8L, 0x9db81233f2660809L, 0x7c255ef750754c74L, 0x7c255ef750754d5fL, "params");
   }
 }

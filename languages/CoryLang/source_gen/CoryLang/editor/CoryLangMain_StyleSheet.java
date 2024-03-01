@@ -54,4 +54,18 @@ public class CoryLangMain_StyleSheet {
     }
 
   }
+  public static class labelStyleClass extends AbstractStyleClass {
+    public labelStyleClass(EditorContext editorContext, SNode node) {
+      super(editorContext, node);
+    }
+    public labelStyleClass(EditorBuilderEnvironment builderEnv) {
+      super(builderEnv);
+    }
+
+    @Override
+    public void apply(Style style, EditorCell editorCell) {
+      style.set(StyleAttributes.TEXT_COLOR, getStyleRegistry().getSimpleColor(MPSColors.DARK_MAGENTA));
+    }
+
+  }
 }

@@ -9,14 +9,19 @@ import org.jetbrains.mps.openapi.language.SAbstractConcept;
 import jetbrains.mps.smodel.runtime.ConceptPresentationBuilder;
 
 public class ConceptPresentationAspectImpl extends ConceptPresentationAspectBase {
+  private ConceptPresentation props_Annotation;
   private ConceptPresentation props_Const;
   private ConceptPresentation props_EmptyStatement;
+  private ConceptPresentation props_ExportAnnotation;
   private ConceptPresentation props_Expression;
   private ConceptPresentation props_F32;
   private ConceptPresentation props_F64;
+  private ConceptPresentation props_FuncCall;
   private ConceptPresentation props_Function;
   private ConceptPresentation props_I32;
   private ConceptPresentation props_I64;
+  private ConceptPresentation props_Import;
+  private ConceptPresentation props_Label;
   private ConceptPresentation props_Module;
   private ConceptPresentation props_ModuleBodyElem;
   private ConceptPresentation props_Name;
@@ -30,6 +35,12 @@ public class ConceptPresentationAspectImpl extends ConceptPresentationAspectBase
   public ConceptPresentation getDescriptor(SAbstractConcept c) {
     StructureAspectDescriptor structureDescriptor = (StructureAspectDescriptor) myLanguageRuntime.getAspect(jetbrains.mps.smodel.runtime.StructureAspectDescriptor.class);
     switch (structureDescriptor.internalIndex(c)) {
+      case LanguageConceptSwitch.Annotation:
+        if (props_Annotation == null) {
+          ConceptPresentationBuilder cpb = new ConceptPresentationBuilder();
+          props_Annotation = cpb.create();
+        }
+        return props_Annotation;
       case LanguageConceptSwitch.Const:
         if (props_Const == null) {
           ConceptPresentationBuilder cpb = new ConceptPresentationBuilder();
@@ -44,6 +55,13 @@ public class ConceptPresentationAspectImpl extends ConceptPresentationAspectBase
           props_EmptyStatement = cpb.create();
         }
         return props_EmptyStatement;
+      case LanguageConceptSwitch.ExportAnnotation:
+        if (props_ExportAnnotation == null) {
+          ConceptPresentationBuilder cpb = new ConceptPresentationBuilder();
+          cpb.rawPresentation("@export");
+          props_ExportAnnotation = cpb.create();
+        }
+        return props_ExportAnnotation;
       case LanguageConceptSwitch.Expression:
         if (props_Expression == null) {
           ConceptPresentationBuilder cpb = new ConceptPresentationBuilder();
@@ -64,6 +82,13 @@ public class ConceptPresentationAspectImpl extends ConceptPresentationAspectBase
           props_F64 = cpb.create();
         }
         return props_F64;
+      case LanguageConceptSwitch.FuncCall:
+        if (props_FuncCall == null) {
+          ConceptPresentationBuilder cpb = new ConceptPresentationBuilder();
+          cpb.rawPresentation("call");
+          props_FuncCall = cpb.create();
+        }
+        return props_FuncCall;
       case LanguageConceptSwitch.Function:
         if (props_Function == null) {
           ConceptPresentationBuilder cpb = new ConceptPresentationBuilder();
@@ -85,6 +110,21 @@ public class ConceptPresentationAspectImpl extends ConceptPresentationAspectBase
           props_I64 = cpb.create();
         }
         return props_I64;
+      case LanguageConceptSwitch.Import:
+        if (props_Import == null) {
+          ConceptPresentationBuilder cpb = new ConceptPresentationBuilder();
+          cpb.shortDesc("Import a function from an external system");
+          cpb.rawPresentation("import");
+          props_Import = cpb.create();
+        }
+        return props_Import;
+      case LanguageConceptSwitch.Label:
+        if (props_Label == null) {
+          ConceptPresentationBuilder cpb = new ConceptPresentationBuilder();
+          cpb.rawPresentation("Label");
+          props_Label = cpb.create();
+        }
+        return props_Label;
       case LanguageConceptSwitch.Module:
         if (props_Module == null) {
           ConceptPresentationBuilder cpb = new ConceptPresentationBuilder();
