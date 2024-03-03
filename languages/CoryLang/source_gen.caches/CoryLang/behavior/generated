@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<product version="3" modelHash="-3z8ic5tmeitwjaqpb9sef8brtwm763">
-  <files names="BehaviorAspectDescriptor.java:FunctionIndexed__BehaviorDescriptor.java:Function__BehaviorDescriptor.java:Import__BehaviorDescriptor.java:Label__BehaviorDescriptor.java:LocalIndexed__BehaviorDescriptor.java" />
+<product version="3" modelHash="ckbfq8ygbd1uuo7aag1pyo33jxam7h6">
+  <files names="BehaviorAspectDescriptor.java:FunctionIndexed__BehaviorDescriptor.java:Function__BehaviorDescriptor.java:Import__BehaviorDescriptor.java:Label__BehaviorDescriptor.java:LocalIndexed__BehaviorDescriptor.java:Module__BehaviorDescriptor.java" />
 </product>
 

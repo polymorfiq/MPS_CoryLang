@@ -12,6 +12,7 @@ import jetbrains.mps.lang.smodel.ConceptSwitchIndexBuilder;
 import jetbrains.mps.smodel.adapter.ids.MetaIdFactory;
 
 public final class BehaviorAspectDescriptor extends BaseBehaviorAspectDescriptor {
+  private final BHDescriptor myModule__BehaviorDescriptor = new Module__BehaviorDescriptor();
   private final BHDescriptor myFunction__BehaviorDescriptor = new Function__BehaviorDescriptor();
   private final BHDescriptor myImport__BehaviorDescriptor = new Import__BehaviorDescriptor();
   private final BHDescriptor myLabel__BehaviorDescriptor = new Label__BehaviorDescriptor();
@@ -35,9 +36,11 @@ public final class BehaviorAspectDescriptor extends BaseBehaviorAspectDescriptor
         return myLabel__BehaviorDescriptor;
       case 4:
         return myLocalIndexed__BehaviorDescriptor;
+      case 5:
+        return myModule__BehaviorDescriptor;
       default:
     }
     return null;
   }
-  private static final ConceptSwitchIndex conceptIndex = new ConceptSwitchIndexBuilder().put(MetaIdFactory.conceptId(0xbe6061dd252a45b8L, 0x9db81233f2660809L, 0x39e7fc40f9b5e368L), MetaIdFactory.conceptId(0xbe6061dd252a45b8L, 0x9db81233f2660809L, 0x7c255ef7543b7565L), MetaIdFactory.conceptId(0xbe6061dd252a45b8L, 0x9db81233f2660809L, 0x7c255ef750704824L), MetaIdFactory.conceptId(0xbe6061dd252a45b8L, 0x9db81233f2660809L, 0x7c255ef750768d1aL), MetaIdFactory.conceptId(0xbe6061dd252a45b8L, 0x9db81233f2660809L, 0x7c255ef7548b1045L)).seal();
+  private static final ConceptSwitchIndex conceptIndex = new ConceptSwitchIndexBuilder().put(MetaIdFactory.conceptId(0xbe6061dd252a45b8L, 0x9db81233f2660809L, 0x39e7fc40f9b5e368L), MetaIdFactory.conceptId(0xbe6061dd252a45b8L, 0x9db81233f2660809L, 0x7c255ef7543b7565L), MetaIdFactory.conceptId(0xbe6061dd252a45b8L, 0x9db81233f2660809L, 0x7c255ef750704824L), MetaIdFactory.conceptId(0xbe6061dd252a45b8L, 0x9db81233f2660809L, 0x7c255ef750768d1aL), MetaIdFactory.conceptId(0xbe6061dd252a45b8L, 0x9db81233f2660809L, 0x7c255ef7548b1045L), MetaIdFactory.conceptId(0xbe6061dd252a45b8L, 0x9db81233f2660809L, 0x39e7fc40f9b5e367L)).seal();
 }
