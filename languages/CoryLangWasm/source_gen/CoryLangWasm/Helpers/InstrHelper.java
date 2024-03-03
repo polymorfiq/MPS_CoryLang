@@ -43,9 +43,13 @@ public class InstrHelper {
       noneMatched = false;
       Sequence.fromIterable(instrForSub(SNodeOperations.as(input, CONCEPTS.Sub$H7), state)).visitAll((instr) -> LinkedListSequence.fromLinkedListNew(outputs).addElement(instr));
     }
-    if (noneMatched && SConceptOperations.isSubConceptOf(cncpt, CONCEPTS.Label$dq)) {
+    if (noneMatched && SConceptOperations.isSubConceptOf(cncpt, CONCEPTS.LabelReference$Zd)) {
       noneMatched = false;
-      Sequence.fromIterable(instrForLabel(SNodeOperations.as(input, CONCEPTS.Label$dq), state)).visitAll((instr) -> LinkedListSequence.fromLinkedListNew(outputs).addElement(instr));
+      Sequence.fromIterable(instrForLabel(SNodeOperations.as(input, CONCEPTS.LabelReference$Zd), state)).visitAll((instr) -> LinkedListSequence.fromLinkedListNew(outputs).addElement(instr));
+    }
+    if (noneMatched && SConceptOperations.isSubConceptOf(cncpt, CONCEPTS.Block$qF)) {
+      noneMatched = false;
+      Sequence.fromIterable(instrForBlock(SNodeOperations.as(input, CONCEPTS.Block$qF), state)).visitAll((instr) -> LinkedListSequence.fromLinkedListNew(outputs).addElement(instr));
     }
     if (noneMatched && SConceptOperations.isSubConceptOf(cncpt, CONCEPTS.Gt$eE)) {
       noneMatched = false;
@@ -92,34 +96,24 @@ public class InstrHelper {
     return outputs;
   }
 
-  public static Iterable<SNode> instrForIf(SNode ifstmt, final TransformState state) {
+  public static Iterable<SNode> instrForIf(SNode ifstmt, TransformState state) {
     final Deque<SNode> outputs = LinkedListSequence.fromLinkedList(new LinkedList<SNode>());
 
     Sequence.fromIterable(nodeToInstr(SLinkOperations.getTarget(ifstmt, LINKS.condition$llIS), state)).visitAll((condInstr) -> LinkedListSequence.fromLinkedListNew(outputs).addElement(condInstr));
 
-    if (ListSequence.fromList(SLinkOperations.getChildren(ifstmt, LINKS.false_expr$kjlt)).count() > 0) {
+    if ((SLinkOperations.getTarget(ifstmt, LINKS.false_expr$kjlt) != null) && ListSequence.fromList(SLinkOperations.getChildren(SLinkOperations.getTarget(ifstmt, LINKS.false_expr$kjlt), LINKS.body$Ovfu)).count() > 0) {
       final SNode wasmIfElse = SConceptOperations.createNewNode(MetaAdapterFactory.getConcept(0xf0ceec7784bd4104L, 0xb53284a17dffbb8aL, 0x39e7fc40f60e5c49L, "WebAssembly.structure.IfElse"));
       SLinkOperations.setTarget(wasmIfElse, LINKS.bt$6a8i, SConceptOperations.createNewNode(MetaAdapterFactory.getConcept(0xf0ceec7784bd4104L, 0xb53284a17dffbb8aL, 0x39e7fc40f5841ec5L, "WebAssembly.structure.EmptyBlockType")));
 
-      ListSequence.fromList(SLinkOperations.getChildren(ifstmt, LINKS.true_expr$hlKP)).visitAll((stmt) -> {
-        Sequence.fromIterable(nodeToInstr(stmt, state)).visitAll((instr) -> ListSequence.fromList(SLinkOperations.getChildren(wasmIfElse, LINKS.if_instrs$6anj)).addElement(instr));
-
-      });
-
-      ListSequence.fromList(SLinkOperations.getChildren(ifstmt, LINKS.false_expr$kjlt)).visitAll((stmt) -> {
-        Sequence.fromIterable(nodeToInstr(stmt, state)).visitAll((instr) -> ListSequence.fromList(SLinkOperations.getChildren(wasmIfElse, LINKS.else_instrs$tFcj)).addElement(instr));
-
-      });
+      Sequence.fromIterable(nodeToInstr(SLinkOperations.getTarget(ifstmt, LINKS.true_expr$hlKP), state)).visitAll((instr) -> ListSequence.fromList(SLinkOperations.getChildren(wasmIfElse, LINKS.if_instrs$6anj)).addElement(instr));
+      Sequence.fromIterable(nodeToInstr(SLinkOperations.getTarget(ifstmt, LINKS.false_expr$kjlt), state)).visitAll((instr) -> ListSequence.fromList(SLinkOperations.getChildren(wasmIfElse, LINKS.else_instrs$tFcj)).addElement(instr));
 
       LinkedListSequence.fromLinkedListNew(outputs).addElement(wasmIfElse);
     } else {
       final SNode wasmIf = SConceptOperations.createNewNode(MetaAdapterFactory.getConcept(0xf0ceec7784bd4104L, 0xb53284a17dffbb8aL, 0x39e7fc40f60e0df9L, "WebAssembly.structure.If"));
       SLinkOperations.setTarget(wasmIf, LINKS.bt$S2JX, SConceptOperations.createNewNode(MetaAdapterFactory.getConcept(0xf0ceec7784bd4104L, 0xb53284a17dffbb8aL, 0x39e7fc40f5841ec5L, "WebAssembly.structure.EmptyBlockType")));
 
-      ListSequence.fromList(SLinkOperations.getChildren(ifstmt, LINKS.true_expr$hlKP)).visitAll((stmt) -> {
-        Sequence.fromIterable(nodeToInstr(stmt, state)).visitAll((instr) -> ListSequence.fromList(SLinkOperations.getChildren(wasmIf, LINKS.instrs$S2YY)).addElement(instr));
-
-      });
+      Sequence.fromIterable(nodeToInstr(SLinkOperations.getTarget(ifstmt, LINKS.true_expr$hlKP), state)).visitAll((instr) -> ListSequence.fromList(SLinkOperations.getChildren(wasmIf, LINKS.instrs$S2YY)).addElement(instr));
 
       LinkedListSequence.fromLinkedListNew(outputs).addElement(wasmIf);
     }
@@ -143,14 +137,21 @@ public class InstrHelper {
     return outputs;
   }
 
-  public static Iterable<SNode> instrForLabel(SNode label, TransformState state) {
+  public static Iterable<SNode> instrForLabel(SNode labelRef, TransformState state) {
     Deque<SNode> outputs = LinkedListSequence.fromLinkedList(new LinkedList<SNode>());
 
     SNode localGet = SConceptOperations.createNewNode(MetaAdapterFactory.getConcept(0xf0ceec7784bd4104L, 0xb53284a17dffbb8aL, 0x39e7fc40f662220cL, "WebAssembly.structure.LocalGet"));
     SNode localidx = SConceptOperations.createNewNode(MetaAdapterFactory.getConcept(0xf0ceec7784bd4104L, 0xb53284a17dffbb8aL, 0x39e7fc40f6622210L, "WebAssembly.structure.LocalIdx"));
-    SPropertyOperations.assign(localidx, PROPS.value$gYuj, state.localIdx(label));
+    SPropertyOperations.assign(localidx, PROPS.value$gYuj, state.localIdx(SLinkOperations.getTarget(labelRef, LINKS.label$KC5l)));
     SLinkOperations.setTarget(localGet, LINKS.localidx$gS$Y, localidx);
     LinkedListSequence.fromLinkedListNew(outputs).addElement(localGet);
+
+    return outputs;
+  }
+
+  public static Iterable<SNode> instrForBlock(SNode block, final TransformState state) {
+    final Deque<SNode> outputs = LinkedListSequence.fromLinkedList(new LinkedList<SNode>());
+    ListSequence.fromList(SLinkOperations.getChildren(block, LINKS.body$Ovfu)).visitAll((stmt) -> Sequence.fromIterable(nodeToInstr(stmt, state)).visitAll((instr) -> LinkedListSequence.fromLinkedListNew(outputs).addElement(instr)));
 
     return outputs;
   }
@@ -172,7 +173,8 @@ public class InstrHelper {
     /*package*/ static final SConcept Const$Wh = MetaAdapterFactory.getConcept(0xbe6061dd252a45b8L, 0x9db81233f2660809L, 0x39e7fc40f9b5e373L, "CoryLang.structure.Const");
     /*package*/ static final SConcept FuncCall$TC = MetaAdapterFactory.getConcept(0xbe6061dd252a45b8L, 0x9db81233f2660809L, 0x7c255ef750754c74L, "CoryLang.structure.FuncCall");
     /*package*/ static final SConcept Sub$H7 = MetaAdapterFactory.getConcept(0xbe6061dd252a45b8L, 0x9db81233f2660809L, 0x7c255ef75466a0a7L, "CoryLang.structure.Sub");
-    /*package*/ static final SConcept Label$dq = MetaAdapterFactory.getConcept(0xbe6061dd252a45b8L, 0x9db81233f2660809L, 0x7c255ef750768d1aL, "CoryLang.structure.Label");
+    /*package*/ static final SConcept LabelReference$Zd = MetaAdapterFactory.getConcept(0xbe6061dd252a45b8L, 0x9db81233f2660809L, 0x7c255ef754f7e6a4L, "CoryLang.structure.LabelReference");
+    /*package*/ static final SConcept Block$qF = MetaAdapterFactory.getConcept(0xbe6061dd252a45b8L, 0x9db81233f2660809L, 0x7c255ef754e07744L, "CoryLang.structure.Block");
     /*package*/ static final SConcept Gt$eE = MetaAdapterFactory.getConcept(0xbe6061dd252a45b8L, 0x9db81233f2660809L, 0x7c255ef754bf3222L, "CoryLang.structure.Gt");
   }
 
@@ -197,9 +199,11 @@ public class InstrHelper {
     /*package*/ static final SContainmentLink if_instrs$6anj = MetaAdapterFactory.getContainmentLink(0xf0ceec7784bd4104L, 0xb53284a17dffbb8aL, 0x39e7fc40f60e5c49L, 0x39e7fc40f60e5c4bL, "if_instrs");
     /*package*/ static final SContainmentLink false_expr$kjlt = MetaAdapterFactory.getContainmentLink(0xbe6061dd252a45b8L, 0x9db81233f2660809L, 0x7c255ef754613a18L, 0x7c255ef754613a7fL, "false_expr");
     /*package*/ static final SContainmentLink else_instrs$tFcj = MetaAdapterFactory.getContainmentLink(0xf0ceec7784bd4104L, 0xb53284a17dffbb8aL, 0x39e7fc40f60e5c49L, 0x39e7fc40f60e5dabL, "else_instrs");
+    /*package*/ static final SContainmentLink body$Ovfu = MetaAdapterFactory.getContainmentLink(0xbe6061dd252a45b8L, 0x9db81233f2660809L, 0x7c255ef754e07744L, 0x7c255ef754e077f9L, "body");
     /*package*/ static final SContainmentLink bt$S2JX = MetaAdapterFactory.getContainmentLink(0xf0ceec7784bd4104L, 0xb53284a17dffbb8aL, 0x39e7fc40f60e0df9L, 0x39e7fc40f60e0dfaL, "bt");
     /*package*/ static final SContainmentLink instrs$S2YY = MetaAdapterFactory.getContainmentLink(0xf0ceec7784bd4104L, 0xb53284a17dffbb8aL, 0x39e7fc40f60e0df9L, 0x39e7fc40f60e0dfbL, "instrs");
     /*package*/ static final SContainmentLink args$XH7Z = MetaAdapterFactory.getContainmentLink(0xbe6061dd252a45b8L, 0x9db81233f2660809L, 0x7c255ef75466a140L, 0x7c255ef75466a27aL, "args");
+    /*package*/ static final SReferenceLink label$KC5l = MetaAdapterFactory.getReferenceLink(0xbe6061dd252a45b8L, 0x9db81233f2660809L, 0x7c255ef754f7e6a4L, 0x7c255ef754f7e6edL, "label");
     /*package*/ static final SContainmentLink localidx$gS$Y = MetaAdapterFactory.getContainmentLink(0xf0ceec7784bd4104L, 0xb53284a17dffbb8aL, 0x39e7fc40f662220cL, 0x39e7fc40f662220eL, "localidx");
     /*package*/ static final SContainmentLink left$uYCO = MetaAdapterFactory.getContainmentLink(0xbe6061dd252a45b8L, 0x9db81233f2660809L, 0x7c255ef754bf3151L, 0x7c255ef754bf32eeL, "left");
     /*package*/ static final SContainmentLink right$G9AJ = MetaAdapterFactory.getContainmentLink(0xbe6061dd252a45b8L, 0x9db81233f2660809L, 0x7c255ef754bf3151L, 0x7c255ef754bf3336L, "right");

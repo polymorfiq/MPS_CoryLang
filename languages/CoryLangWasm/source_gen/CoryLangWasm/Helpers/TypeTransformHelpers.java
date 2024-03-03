@@ -162,10 +162,7 @@ public class TypeTransformHelpers {
           localState.addLocal(SLinkOperations.getTarget(param, LINKS.label$gfjL));
         });
 
-        ListSequence.fromList(SLinkOperations.getChildren(func, LINKS.body$vjN8)).visitAll((stmt) -> {
-          Iterable<SNode> instrs = InstrHelper.nodeToInstr(stmt, localState);
-          Sequence.fromIterable(instrs).visitAll((instr) -> ListSequence.fromList(SLinkOperations.getChildren(SLinkOperations.getTarget(SLinkOperations.getTarget(funcCode, LINKS.func$aeX1), LINKS.expr$w151), LINKS.instrs$LGLM)).addElement(instr));
-        });
+        Sequence.fromIterable(InstrHelper.nodeToInstr(SLinkOperations.getTarget(func, LINKS.body$vjN8), localState)).visitAll((instr) -> ListSequence.fromList(SLinkOperations.getChildren(SLinkOperations.getTarget(SLinkOperations.getTarget(funcCode, LINKS.func$aeX1), LINKS.expr$w151), LINKS.instrs$LGLM)).addElement(instr));
 
         LinkedListSequence.fromLinkedListNew(outputs).addElement(funcCode);
 

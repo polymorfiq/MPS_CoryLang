@@ -56,9 +56,6 @@
       <concept id="1138056022639" name="jetbrains.mps.lang.smodel.structure.SPropertyAccess" flags="nn" index="3TrcHB">
         <reference id="1138056395725" name="property" index="3TsBF5" />
       </concept>
-      <concept id="1138056143562" name="jetbrains.mps.lang.smodel.structure.SLinkAccess" flags="nn" index="3TrEf2">
-        <reference id="1138056516764" name="link" index="3Tt5mk" />
-      </concept>
     </language>
     <language id="ceab5195-25ea-4f22-9b92-103b95ca8c0c" name="jetbrains.mps.lang.core">
       <concept id="1133920641626" name="jetbrains.mps.lang.core.structure.BaseConcept" flags="ng" index="2VYdi">
@@ -161,15 +158,10 @@
       <node concept="3Tm1VV" id="7K_nJtkzER2" role="1B3o_S" />
       <node concept="3clFbS" id="7K_nJtkzER5" role="3clF47">
         <node concept="3clFbF" id="7K_nJtkzESg" role="3cqZAp">
-          <node concept="2OqwBi" id="7K_nJtkzFyS" role="3clFbG">
-            <node concept="2OqwBi" id="7K_nJtkzF7j" role="2Oq$k0">
-              <node concept="13iPFW" id="7K_nJtkzESf" role="2Oq$k0" />
-              <node concept="3TrEf2" id="7K_nJtkzFnz" role="2OqNvi">
-                <ref role="3Tt5mk" to="i6s:7K_nJtgtCPd" resolve="name" />
-              </node>
-            </node>
-            <node concept="3TrcHB" id="7K_nJtkzFSA" role="2OqNvi">
-              <ref role="3TsBF5" to="i6s:7K_nJtfjK_J" resolve="value" />
+          <node concept="2OqwBi" id="7K_nJtkzF7j" role="3clFbG">
+            <node concept="13iPFW" id="7K_nJtkzESf" role="2Oq$k0" />
+            <node concept="3TrcHB" id="7K_nJtkZx3z" role="2OqNvi">
+              <ref role="3TsBF5" to="tpck:h0TrG11" resolve="name" />
             </node>
           </node>
         </node>

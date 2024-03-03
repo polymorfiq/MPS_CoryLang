@@ -14,11 +14,9 @@ import java.util.Arrays;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.mps.openapi.model.SNode;
 import jetbrains.mps.lang.smodel.generator.smodelAdapter.SPropertyOperations;
-import jetbrains.mps.lang.smodel.generator.smodelAdapter.SLinkOperations;
 import jetbrains.mps.core.aspects.behaviour.api.SConstructor;
 import org.jetbrains.annotations.Nullable;
 import jetbrains.mps.core.aspects.behaviour.api.BHMethodNotFoundException;
-import org.jetbrains.mps.openapi.language.SContainmentLink;
 import org.jetbrains.mps.openapi.language.SProperty;
 
 public final class Label__BehaviorDescriptor extends BaseBHDescriptor {
@@ -32,7 +30,7 @@ public final class Label__BehaviorDescriptor extends BaseBHDescriptor {
   }
 
   /*package*/ static String name_id7K_nJtkyL3W(@NotNull SNode __thisNode__) {
-    return SPropertyOperations.getString(SLinkOperations.getTarget(__thisNode__, LINKS.name$y8_l), PROPS.value$iwhv);
+    return SPropertyOperations.getString(__thisNode__, PROPS.name$MnvL);
   }
 
   /*package*/ Label__BehaviorDescriptor() {
@@ -81,11 +79,7 @@ public final class Label__BehaviorDescriptor extends BaseBHDescriptor {
     return CONCEPT;
   }
 
-  private static final class LINKS {
-    /*package*/ static final SContainmentLink name$y8_l = MetaAdapterFactory.getContainmentLink(0xbe6061dd252a45b8L, 0x9db81233f2660809L, 0x7c255ef750768d1aL, 0x7c255ef750768d4dL, "name");
-  }
-
   private static final class PROPS {
-    /*package*/ static final SProperty value$iwhv = MetaAdapterFactory.getProperty(0xbe6061dd252a45b8L, 0x9db81233f2660809L, 0x7c255ef74f4f0932L, 0x7c255ef74f4f096fL, "value");
+    /*package*/ static final SProperty name$MnvL = MetaAdapterFactory.getProperty(0xceab519525ea4f22L, 0x9b92103b95ca8c0cL, 0x110396eaaa4L, 0x110396ec041L, "name");
   }
 }

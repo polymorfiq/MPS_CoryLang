@@ -30,23 +30,25 @@
         <child id="8945660651213107950" name="left" index="CAAKp" />
         <child id="8945660651213108022" name="right" index="CAAR1" />
       </concept>
+      <concept id="8945660651215288132" name="CoryLang.structure.Block" flags="ng" index="CLiAN">
+        <child id="8945660651215288313" name="body" index="CLi$e" />
+      </concept>
+      <concept id="8945660651216823972" name="CoryLang.structure.LabelReference" flags="ng" index="COFxj">
+        <reference id="8945660651216824045" name="label" index="COFwq" />
+      </concept>
       <concept id="8945660651141155956" name="CoryLang.structure.FuncCall" flags="ng" index="Gk1a3">
         <reference id="8945660651204474018" name="func" index="C7yDl" />
         <child id="8945660651141156191" name="params" index="Gk1eC" />
         <child id="8945660651141156148" name="name" index="Gk1f3" />
       </concept>
-      <concept id="8945660651141238042" name="CoryLang.structure.Label" flags="ng" index="GkXfH">
-        <child id="8945660651141238093" name="name" index="GkXeU" />
-      </concept>
+      <concept id="8945660651141238042" name="CoryLang.structure.Label" flags="ng" index="GkXfH" />
       <concept id="8945660651140827172" name="CoryLang.structure.Import" flags="ng" index="Glhrj">
         <property id="8945660651140828734" name="func_name" index="Glh39" />
         <property id="8945660651140828692" name="module_name" index="Glh3z" />
         <child id="8945660651140827488" name="params" index="Glhun" />
       </concept>
       <concept id="8945660651139603083" name="CoryLang.structure.ExportAnnotation" flags="ng" index="GuchW" />
-      <concept id="8945660651121871154" name="CoryLang.structure.Name" flags="ng" index="Nq_v5">
-        <property id="8945660651121871215" name="value" index="Nq_uo" />
-      </concept>
+      <concept id="8945660651121871154" name="CoryLang.structure.Name" flags="ng" index="Nq_v5" />
       <concept id="8945660651121870738" name="CoryLang.structure.ParamOrResult" flags="ng" index="Nq___">
         <property id="8945660651121870849" name="type" index="Nq_rQ" />
         <child id="8945660651121871269" name="label" index="Nq_ti" />
@@ -74,59 +76,54 @@
       <property role="Glh39" value="log" />
       <node concept="Nq___" id="7K_nJtkfZ72" role="Glhun">
         <property role="Nq_rQ" value="7K_nJtfjKld/i32" />
-        <node concept="GkXfH" id="7K_nJtkfZ73" role="Nq_ti">
-          <node concept="Nq_v5" id="7K_nJtkfZ74" role="GkXeU">
-            <property role="Nq_uo" value="a" />
-          </node>
+        <node concept="GkXfH" id="7K_nJtl0kjq" role="Nq_ti">
+          <property role="TrG5h" value="message" />
         </node>
       </node>
     </node>
-    <node concept="30kxx4" id="7K_nJtkfZ5t" role="30kxYE" />
-    <node concept="30kxWC" id="7K_nJtkfYY2" role="30kxYE">
+    <node concept="30kxx4" id="7K_nJtkWPPu" role="30kxYE" />
+    <node concept="30kxWC" id="7K_nJtkWPQD" role="30kxYE">
       <property role="TrG5h" value="logN" />
-      <node concept="Nq___" id="7K_nJtkfYZh" role="Nq_r1">
-        <property role="Nq_rQ" value="7K_nJtfjKld/i32" />
-        <node concept="GkXfH" id="7K_nJtkfYZi" role="Nq_ti">
-          <node concept="Nq_v5" id="7K_nJtkfYZj" role="GkXeU">
-            <property role="Nq_uo" value="n" />
+      <node concept="CLiAN" id="7K_nJtkWPQF" role="30kwfh">
+        <node concept="Ch6jJ" id="7K_nJtkWPT8" role="CLi$e">
+          <node concept="CAANl" id="7K_nJtkWPTy" role="Ch6gE">
+            <node concept="30kxWN" id="7K_nJtkWPUz" role="CAAR1">
+              <property role="GpwuK" value="7K_nJtfjKld/i32" />
+              <property role="30kxWQ" value="0" />
+            </node>
+            <node concept="COFxj" id="7K_nJtl0kgD" role="CAAKp">
+              <ref role="COFwq" node="7K_nJtl04wm" resolve="n" />
+            </node>
+          </node>
+          <node concept="CLiAN" id="7K_nJtkWPTa" role="Ch6iW">
+            <node concept="Gk1a3" id="7K_nJtkWPW7" role="CLi$e">
+              <ref role="C7yDl" node="7K_nJtkfZ5L" resolve="log" />
+              <node concept="Nq_v5" id="7K_nJtkWPW8" role="Gk1f3" />
+              <node concept="30kxWN" id="7K_nJtkWPWD" role="Gk1eC">
+                <property role="GpwuK" value="7K_nJtfjKld/i32" />
+                <property role="30kxWQ" value="123" />
+              </node>
+            </node>
+            <node concept="Gk1a3" id="7K_nJtkXU7V" role="CLi$e">
+              <ref role="C7yDl" node="7K_nJtkWPQD" resolve="logN" />
+              <node concept="Nq_v5" id="7K_nJtkXU7X" role="Gk1f3" />
+              <node concept="CgZTg" id="7K_nJtkXU9a" role="Gk1eC">
+                <node concept="COFxj" id="7K_nJtkZgaX" role="CgZMd">
+                  <ref role="COFwq" node="7K_nJtl04wm" resolve="n" />
+                </node>
+                <node concept="30kxWN" id="7K_nJtkXUa3" role="CgZMd">
+                  <property role="GpwuK" value="7K_nJtfjKld/i32" />
+                  <property role="30kxWQ" value="1" />
+                </node>
+              </node>
+            </node>
           </node>
         </node>
       </node>
-      <node concept="30kxx4" id="7K_nJtkoFqo" role="30kwfh" />
-      <node concept="Ch6jJ" id="7K_nJtkoFhj" role="30kwfh">
-        <node concept="Gk1a3" id="7K_nJtkfZ8E" role="Ch6iW">
-          <ref role="C7yDl" node="7K_nJtkfZ5L" resolve="some_func" />
-          <node concept="30kxWN" id="7K_nJtki4rq" role="Gk1eC">
-            <property role="GpwuK" value="7K_nJtfjKld/i32" />
-            <property role="30kxWQ" value="123" />
-          </node>
-          <node concept="Nq_v5" id="7K_nJtkfZ8F" role="Gk1f3" />
-        </node>
-        <node concept="Gk1a3" id="7K_nJtkpE0Q" role="Ch6iW">
-          <ref role="C7yDl" node="7K_nJtkfYY2" resolve="logN" />
-          <node concept="Nq_v5" id="7K_nJtkpE0S" role="Gk1f3" />
-          <node concept="CgZTg" id="7K_nJtkqVCk" role="Gk1eC">
-            <node concept="GkXfH" id="7K_nJtkqVCy" role="CgZMd">
-              <node concept="Nq_v5" id="7K_nJtkqVC$" role="GkXeU">
-                <property role="Nq_uo" value="n" />
-              </node>
-            </node>
-            <node concept="30kxWN" id="7K_nJtkqVDa" role="CgZMd">
-              <property role="GpwuK" value="7K_nJtfjKld/i32" />
-              <property role="30kxWQ" value="1" />
-            </node>
-          </node>
-        </node>
-        <node concept="CAANl" id="7K_nJtkKK5t" role="Ch6gE">
-          <node concept="GkXfH" id="7K_nJtkKXq3" role="CAAKp">
-            <node concept="Nq_v5" id="7K_nJtkKXqH" role="GkXeU">
-              <property role="Nq_uo" value="n" />
-            </node>
-          </node>
-          <node concept="30kxWN" id="7K_nJtkKXrQ" role="CAAR1">
-            <property role="GpwuK" value="7K_nJtfjKld/i32" />
-            <property role="30kxWQ" value="0" />
-          </node>
+      <node concept="Nq___" id="7K_nJtkWPS9" role="Nq_r1">
+        <property role="Nq_rQ" value="7K_nJtfjKld/i32" />
+        <node concept="GkXfH" id="7K_nJtl04wm" role="Nq_ti">
+          <property role="TrG5h" value="n" />
         </node>
       </node>
     </node>
@@ -135,14 +132,15 @@
       <property role="TrG5h" value="main" />
       <node concept="Cv5lX" id="7K_nJtkn$5p" role="GuK2m" />
       <node concept="GuchW" id="7K_nJtkojsS" role="GuK2m" />
-      <node concept="30kxWN" id="7K_nJtkojy6" role="30kwfh">
-        <property role="GpwuK" value="7K_nJtfjKld/i32" />
-        <property role="30kxWQ" value="5" />
-      </node>
-      <node concept="30kxx4" id="7K_nJtkoFu8" role="30kwfh" />
-      <node concept="Gk1a3" id="7K_nJtkojt$" role="30kwfh">
-        <ref role="C7yDl" node="7K_nJtkfYY2" resolve="logN" />
-        <node concept="Nq_v5" id="7K_nJtkojt_" role="Gk1f3" />
+      <node concept="CLiAN" id="7K_nJtkWPX$" role="30kwfh">
+        <node concept="Gk1a3" id="7K_nJtkWPYh" role="CLi$e">
+          <ref role="C7yDl" node="7K_nJtkWPQD" resolve="logN" />
+          <node concept="Nq_v5" id="7K_nJtkWPYi" role="Gk1f3" />
+          <node concept="30kxWN" id="7K_nJtkWPYN" role="Gk1eC">
+            <property role="GpwuK" value="7K_nJtfjKld/i32" />
+            <property role="30kxWQ" value="5" />
+          </node>
+        </node>
       </node>
     </node>
   </node>
