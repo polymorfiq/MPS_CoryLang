@@ -10,6 +10,7 @@ import jetbrains.mps.smodel.runtime.ConceptPresentationBuilder;
 
 public class ConceptPresentationAspectImpl extends ConceptPresentationAspectBase {
   private ConceptPresentation props_Annotation;
+  private ConceptPresentation props_BinaryOp;
   private ConceptPresentation props_Const;
   private ConceptPresentation props_EmptyStatement;
   private ConceptPresentation props_ExportAnnotation;
@@ -18,15 +19,24 @@ public class ConceptPresentationAspectImpl extends ConceptPresentationAspectBase
   private ConceptPresentation props_F64;
   private ConceptPresentation props_FuncCall;
   private ConceptPresentation props_Function;
+  private ConceptPresentation props_FunctionIndexed;
+  private ConceptPresentation props_Gt;
   private ConceptPresentation props_I32;
   private ConceptPresentation props_I64;
+  private ConceptPresentation props_IfStatement;
   private ConceptPresentation props_Import;
   private ConceptPresentation props_Label;
+  private ConceptPresentation props_LocalIndexed;
   private ConceptPresentation props_Module;
   private ConceptPresentation props_ModuleBodyElem;
+  private ConceptPresentation props_NAryOp;
   private ConceptPresentation props_Name;
+  private ConceptPresentation props_Operation;
   private ConceptPresentation props_ParamOrResult;
+  private ConceptPresentation props_Result;
+  private ConceptPresentation props_StartAnnotation;
   private ConceptPresentation props_Statement;
+  private ConceptPresentation props_Sub;
   private ConceptPresentation props_Type;
   private ConceptPresentation props_Value;
 
@@ -41,6 +51,12 @@ public class ConceptPresentationAspectImpl extends ConceptPresentationAspectBase
           props_Annotation = cpb.create();
         }
         return props_Annotation;
+      case LanguageConceptSwitch.BinaryOp:
+        if (props_BinaryOp == null) {
+          ConceptPresentationBuilder cpb = new ConceptPresentationBuilder();
+          props_BinaryOp = cpb.create();
+        }
+        return props_BinaryOp;
       case LanguageConceptSwitch.Const:
         if (props_Const == null) {
           ConceptPresentationBuilder cpb = new ConceptPresentationBuilder();
@@ -92,10 +108,23 @@ public class ConceptPresentationAspectImpl extends ConceptPresentationAspectBase
       case LanguageConceptSwitch.Function:
         if (props_Function == null) {
           ConceptPresentationBuilder cpb = new ConceptPresentationBuilder();
-          cpb.rawPresentation("func");
+          cpb.presentationByName();
           props_Function = cpb.create();
         }
         return props_Function;
+      case LanguageConceptSwitch.FunctionIndexed:
+        if (props_FunctionIndexed == null) {
+          ConceptPresentationBuilder cpb = new ConceptPresentationBuilder();
+          props_FunctionIndexed = cpb.create();
+        }
+        return props_FunctionIndexed;
+      case LanguageConceptSwitch.Gt:
+        if (props_Gt == null) {
+          ConceptPresentationBuilder cpb = new ConceptPresentationBuilder();
+          cpb.rawPresentation(">");
+          props_Gt = cpb.create();
+        }
+        return props_Gt;
       case LanguageConceptSwitch.I32:
         if (props_I32 == null) {
           ConceptPresentationBuilder cpb = new ConceptPresentationBuilder();
@@ -110,11 +139,18 @@ public class ConceptPresentationAspectImpl extends ConceptPresentationAspectBase
           props_I64 = cpb.create();
         }
         return props_I64;
+      case LanguageConceptSwitch.IfStatement:
+        if (props_IfStatement == null) {
+          ConceptPresentationBuilder cpb = new ConceptPresentationBuilder();
+          cpb.rawPresentation("if");
+          props_IfStatement = cpb.create();
+        }
+        return props_IfStatement;
       case LanguageConceptSwitch.Import:
         if (props_Import == null) {
           ConceptPresentationBuilder cpb = new ConceptPresentationBuilder();
           cpb.shortDesc("Import a function from an external system");
-          cpb.rawPresentation("import");
+          cpb.presentationByName();
           props_Import = cpb.create();
         }
         return props_Import;
@@ -125,6 +161,12 @@ public class ConceptPresentationAspectImpl extends ConceptPresentationAspectBase
           props_Label = cpb.create();
         }
         return props_Label;
+      case LanguageConceptSwitch.LocalIndexed:
+        if (props_LocalIndexed == null) {
+          ConceptPresentationBuilder cpb = new ConceptPresentationBuilder();
+          props_LocalIndexed = cpb.create();
+        }
+        return props_LocalIndexed;
       case LanguageConceptSwitch.Module:
         if (props_Module == null) {
           ConceptPresentationBuilder cpb = new ConceptPresentationBuilder();
@@ -138,6 +180,12 @@ public class ConceptPresentationAspectImpl extends ConceptPresentationAspectBase
           props_ModuleBodyElem = cpb.create();
         }
         return props_ModuleBodyElem;
+      case LanguageConceptSwitch.NAryOp:
+        if (props_NAryOp == null) {
+          ConceptPresentationBuilder cpb = new ConceptPresentationBuilder();
+          props_NAryOp = cpb.create();
+        }
+        return props_NAryOp;
       case LanguageConceptSwitch.Name:
         if (props_Name == null) {
           ConceptPresentationBuilder cpb = new ConceptPresentationBuilder();
@@ -145,6 +193,12 @@ public class ConceptPresentationAspectImpl extends ConceptPresentationAspectBase
           props_Name = cpb.create();
         }
         return props_Name;
+      case LanguageConceptSwitch.Operation:
+        if (props_Operation == null) {
+          ConceptPresentationBuilder cpb = new ConceptPresentationBuilder();
+          props_Operation = cpb.create();
+        }
+        return props_Operation;
       case LanguageConceptSwitch.ParamOrResult:
         if (props_ParamOrResult == null) {
           ConceptPresentationBuilder cpb = new ConceptPresentationBuilder();
@@ -152,6 +206,20 @@ public class ConceptPresentationAspectImpl extends ConceptPresentationAspectBase
           props_ParamOrResult = cpb.create();
         }
         return props_ParamOrResult;
+      case LanguageConceptSwitch.Result:
+        if (props_Result == null) {
+          ConceptPresentationBuilder cpb = new ConceptPresentationBuilder();
+          cpb.rawPresentation("Result");
+          props_Result = cpb.create();
+        }
+        return props_Result;
+      case LanguageConceptSwitch.StartAnnotation:
+        if (props_StartAnnotation == null) {
+          ConceptPresentationBuilder cpb = new ConceptPresentationBuilder();
+          cpb.rawPresentation("@start");
+          props_StartAnnotation = cpb.create();
+        }
+        return props_StartAnnotation;
       case LanguageConceptSwitch.Statement:
         if (props_Statement == null) {
           ConceptPresentationBuilder cpb = new ConceptPresentationBuilder();
@@ -159,6 +227,13 @@ public class ConceptPresentationAspectImpl extends ConceptPresentationAspectBase
           props_Statement = cpb.create();
         }
         return props_Statement;
+      case LanguageConceptSwitch.Sub:
+        if (props_Sub == null) {
+          ConceptPresentationBuilder cpb = new ConceptPresentationBuilder();
+          cpb.rawPresentation("sub");
+          props_Sub = cpb.create();
+        }
+        return props_Sub;
       case LanguageConceptSwitch.Type:
         if (props_Type == null) {
           ConceptPresentationBuilder cpb = new ConceptPresentationBuilder();

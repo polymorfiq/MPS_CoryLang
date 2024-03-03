@@ -15,8 +15,10 @@ import jetbrains.mps.lang.smodel.generator.smodelAdapter.SEnumOperations;
 import jetbrains.mps.smodel.adapter.structure.MetaAdapterFactory;
 import jetbrains.mps.lang.smodel.generator.smodelAdapter.SLinkOperations;
 import jetbrains.mps.internal.collections.runtime.ListSequence;
+import jetbrains.mps.baseLanguage.closures.runtime.Wrappers;
 import org.jetbrains.mps.openapi.language.SConcept;
 import org.jetbrains.mps.openapi.language.SProperty;
+import org.jetbrains.mps.openapi.language.SReferenceLink;
 import org.jetbrains.mps.openapi.language.SContainmentLink;
 
 public class InstrHelper {
@@ -25,6 +27,10 @@ public class InstrHelper {
 
     SAbstractConcept cncpt = SNodeOperations.getConcept(input);
     boolean noneMatched = true;
+    if (noneMatched && SConceptOperations.isSubConceptOf(cncpt, CONCEPTS.IfStatement$BL)) {
+      noneMatched = false;
+      Sequence.fromIterable(instrForIf(SNodeOperations.as(input, CONCEPTS.IfStatement$BL), state)).visitAll((instr) -> LinkedListSequence.fromLinkedListNew(outputs).addElement(instr));
+    }
     if (noneMatched && SConceptOperations.isSubConceptOf(cncpt, CONCEPTS.Const$Wh)) {
       noneMatched = false;
       Sequence.fromIterable(instrForConst(SNodeOperations.as(input, CONCEPTS.Const$Wh), state)).visitAll((instr) -> LinkedListSequence.fromLinkedListNew(outputs).addElement(instr));
@@ -32,6 +38,18 @@ public class InstrHelper {
     if (noneMatched && SConceptOperations.isSubConceptOf(cncpt, CONCEPTS.FuncCall$TC)) {
       noneMatched = false;
       Sequence.fromIterable(instrForCall(SNodeOperations.as(input, CONCEPTS.FuncCall$TC), state)).visitAll((instr) -> LinkedListSequence.fromLinkedListNew(outputs).addElement(instr));
+    }
+    if (noneMatched && SConceptOperations.isSubConceptOf(cncpt, CONCEPTS.Sub$H7)) {
+      noneMatched = false;
+      Sequence.fromIterable(instrForSub(SNodeOperations.as(input, CONCEPTS.Sub$H7), state)).visitAll((instr) -> LinkedListSequence.fromLinkedListNew(outputs).addElement(instr));
+    }
+    if (noneMatched && SConceptOperations.isSubConceptOf(cncpt, CONCEPTS.Label$dq)) {
+      noneMatched = false;
+      Sequence.fromIterable(instrForLabel(SNodeOperations.as(input, CONCEPTS.Label$dq), state)).visitAll((instr) -> LinkedListSequence.fromLinkedListNew(outputs).addElement(instr));
+    }
+    if (noneMatched && SConceptOperations.isSubConceptOf(cncpt, CONCEPTS.Gt$eE)) {
+      noneMatched = false;
+      Sequence.fromIterable(instrForGt(SNodeOperations.as(input, CONCEPTS.Gt$eE), state)).visitAll((instr) -> LinkedListSequence.fromLinkedListNew(outputs).addElement(instr));
     }
 
     return outputs;
@@ -65,7 +83,7 @@ public class InstrHelper {
     final Deque<SNode> outputs = LinkedListSequence.fromLinkedList(new LinkedList<SNode>());
     SNode wasmCall = SConceptOperations.createNewNode(MetaAdapterFactory.getConcept(0xf0ceec7784bd4104L, 0xb53284a17dffbb8aL, 0x39e7fc40f6467101L, "WebAssembly.structure.Call"));
     SNode funcidx = SConceptOperations.createNewNode(MetaAdapterFactory.getConcept(0xf0ceec7784bd4104L, 0xb53284a17dffbb8aL, 0x39e7fc40f52b227aL, "WebAssembly.structure.FuncIdx"));
-    SPropertyOperations.assign(funcidx, PROPS.value$S0Mk, 0);
+    SPropertyOperations.assign(funcidx, PROPS.value$S0Mk, state.funcIdx(SLinkOperations.getTarget(call, LINKS.func$XAeY)));
     SLinkOperations.setTarget(wasmCall, LINKS.x$eHsN, funcidx);
 
     ListSequence.fromList(SLinkOperations.getChildren(call, LINKS.params$tnN7)).visitAll((param) -> Sequence.fromIterable(nodeToInstr(param, state)).visitAll((paramInstr) -> LinkedListSequence.fromLinkedListNew(outputs).addElement(paramInstr)));
@@ -74,9 +92,88 @@ public class InstrHelper {
     return outputs;
   }
 
+  public static Iterable<SNode> instrForIf(SNode ifstmt, final TransformState state) {
+    final Deque<SNode> outputs = LinkedListSequence.fromLinkedList(new LinkedList<SNode>());
+
+    Sequence.fromIterable(nodeToInstr(SLinkOperations.getTarget(ifstmt, LINKS.condition$llIS), state)).visitAll((condInstr) -> LinkedListSequence.fromLinkedListNew(outputs).addElement(condInstr));
+
+    if (ListSequence.fromList(SLinkOperations.getChildren(ifstmt, LINKS.false_expr$kjlt)).count() > 0) {
+      final SNode wasmIfElse = SConceptOperations.createNewNode(MetaAdapterFactory.getConcept(0xf0ceec7784bd4104L, 0xb53284a17dffbb8aL, 0x39e7fc40f60e5c49L, "WebAssembly.structure.IfElse"));
+      SLinkOperations.setTarget(wasmIfElse, LINKS.bt$6a8i, SConceptOperations.createNewNode(MetaAdapterFactory.getConcept(0xf0ceec7784bd4104L, 0xb53284a17dffbb8aL, 0x39e7fc40f5841ec5L, "WebAssembly.structure.EmptyBlockType")));
+
+      ListSequence.fromList(SLinkOperations.getChildren(ifstmt, LINKS.true_expr$hlKP)).visitAll((stmt) -> {
+        Sequence.fromIterable(nodeToInstr(stmt, state)).visitAll((instr) -> ListSequence.fromList(SLinkOperations.getChildren(wasmIfElse, LINKS.if_instrs$6anj)).addElement(instr));
+
+      });
+
+      ListSequence.fromList(SLinkOperations.getChildren(ifstmt, LINKS.false_expr$kjlt)).visitAll((stmt) -> {
+        Sequence.fromIterable(nodeToInstr(stmt, state)).visitAll((instr) -> ListSequence.fromList(SLinkOperations.getChildren(wasmIfElse, LINKS.else_instrs$tFcj)).addElement(instr));
+
+      });
+
+      LinkedListSequence.fromLinkedListNew(outputs).addElement(wasmIfElse);
+    } else {
+      final SNode wasmIf = SConceptOperations.createNewNode(MetaAdapterFactory.getConcept(0xf0ceec7784bd4104L, 0xb53284a17dffbb8aL, 0x39e7fc40f60e0df9L, "WebAssembly.structure.If"));
+      SLinkOperations.setTarget(wasmIf, LINKS.bt$S2JX, SConceptOperations.createNewNode(MetaAdapterFactory.getConcept(0xf0ceec7784bd4104L, 0xb53284a17dffbb8aL, 0x39e7fc40f5841ec5L, "WebAssembly.structure.EmptyBlockType")));
+
+      ListSequence.fromList(SLinkOperations.getChildren(ifstmt, LINKS.true_expr$hlKP)).visitAll((stmt) -> {
+        Sequence.fromIterable(nodeToInstr(stmt, state)).visitAll((instr) -> ListSequence.fromList(SLinkOperations.getChildren(wasmIf, LINKS.instrs$S2YY)).addElement(instr));
+
+      });
+
+      LinkedListSequence.fromLinkedListNew(outputs).addElement(wasmIf);
+    }
+
+    return outputs;
+  }
+
+  public static Iterable<SNode> instrForSub(SNode sub, final TransformState state) {
+    final Deque<SNode> outputs = LinkedListSequence.fromLinkedList(new LinkedList<SNode>());
+
+    final Wrappers._int i = new Wrappers._int(0);
+    ListSequence.fromList(SLinkOperations.getChildren(sub, LINKS.args$XH7Z)).visitAll((arg) -> {
+      Sequence.fromIterable(nodeToInstr(arg, state)).visitAll((instr) -> LinkedListSequence.fromLinkedListNew(outputs).addElement(instr));
+      if (i.value > 0) {
+        LinkedListSequence.fromLinkedListNew(outputs).addElement(SConceptOperations.createNewNode(MetaAdapterFactory.getConcept(0xf0ceec7784bd4104L, 0xb53284a17dffbb8aL, 0x39e7fc40f69a425dL, "WebAssembly.structure.I32Sub")));
+      }
+
+      i.value += 1;
+    });
+
+    return outputs;
+  }
+
+  public static Iterable<SNode> instrForLabel(SNode label, TransformState state) {
+    Deque<SNode> outputs = LinkedListSequence.fromLinkedList(new LinkedList<SNode>());
+
+    SNode localGet = SConceptOperations.createNewNode(MetaAdapterFactory.getConcept(0xf0ceec7784bd4104L, 0xb53284a17dffbb8aL, 0x39e7fc40f662220cL, "WebAssembly.structure.LocalGet"));
+    SNode localidx = SConceptOperations.createNewNode(MetaAdapterFactory.getConcept(0xf0ceec7784bd4104L, 0xb53284a17dffbb8aL, 0x39e7fc40f6622210L, "WebAssembly.structure.LocalIdx"));
+    SPropertyOperations.assign(localidx, PROPS.value$gYuj, state.localIdx(label));
+    SLinkOperations.setTarget(localGet, LINKS.localidx$gS$Y, localidx);
+    LinkedListSequence.fromLinkedListNew(outputs).addElement(localGet);
+
+    return outputs;
+  }
+
+  public static Iterable<SNode> instrForGt(SNode gtOp, TransformState state) {
+    final Deque<SNode> outputs = LinkedListSequence.fromLinkedList(new LinkedList<SNode>());
+    Sequence.fromIterable(nodeToInstr(SLinkOperations.getTarget(gtOp, LINKS.left$uYCO), state)).visitAll((instr) -> LinkedListSequence.fromLinkedListNew(outputs).addElement(instr));
+    Sequence.fromIterable(nodeToInstr(SLinkOperations.getTarget(gtOp, LINKS.right$G9AJ), state)).visitAll((instr) -> LinkedListSequence.fromLinkedListNew(outputs).addElement(instr));
+    LinkedListSequence.fromLinkedListNew(outputs).addElement(SConceptOperations.createNewNode(MetaAdapterFactory.getConcept(0xf0ceec7784bd4104L, 0xb53284a17dffbb8aL, 0x39e7fc40f68f29d2L, "WebAssembly.structure.I32GtS")));
+
+    return outputs;
+  }
+
+
+
+
   private static final class CONCEPTS {
+    /*package*/ static final SConcept IfStatement$BL = MetaAdapterFactory.getConcept(0xbe6061dd252a45b8L, 0x9db81233f2660809L, 0x7c255ef754613a18L, "CoryLang.structure.IfStatement");
     /*package*/ static final SConcept Const$Wh = MetaAdapterFactory.getConcept(0xbe6061dd252a45b8L, 0x9db81233f2660809L, 0x39e7fc40f9b5e373L, "CoryLang.structure.Const");
     /*package*/ static final SConcept FuncCall$TC = MetaAdapterFactory.getConcept(0xbe6061dd252a45b8L, 0x9db81233f2660809L, 0x7c255ef750754c74L, "CoryLang.structure.FuncCall");
+    /*package*/ static final SConcept Sub$H7 = MetaAdapterFactory.getConcept(0xbe6061dd252a45b8L, 0x9db81233f2660809L, 0x7c255ef75466a0a7L, "CoryLang.structure.Sub");
+    /*package*/ static final SConcept Label$dq = MetaAdapterFactory.getConcept(0xbe6061dd252a45b8L, 0x9db81233f2660809L, 0x7c255ef750768d1aL, "CoryLang.structure.Label");
+    /*package*/ static final SConcept Gt$eE = MetaAdapterFactory.getConcept(0xbe6061dd252a45b8L, 0x9db81233f2660809L, 0x7c255ef754bf3222L, "CoryLang.structure.Gt");
   }
 
   private static final class PROPS {
@@ -87,10 +184,24 @@ public class InstrHelper {
     /*package*/ static final SProperty value$FF8t = MetaAdapterFactory.getProperty(0xf0ceec7784bd4104L, 0xb53284a17dffbb8aL, 0x39e7fc40f50cd7bcL, 0x39e7fc40f50cd7bdL, "value");
     /*package*/ static final SProperty value$xr4t = MetaAdapterFactory.getProperty(0xf0ceec7784bd4104L, 0xb53284a17dffbb8aL, 0x39e7fc40f514690eL, 0x39e7fc40f514690fL, "value");
     /*package*/ static final SProperty value$S0Mk = MetaAdapterFactory.getProperty(0xf0ceec7784bd4104L, 0xb53284a17dffbb8aL, 0x39e7fc40f52b227aL, 0x39e7fc40f52b2288L, "value");
+    /*package*/ static final SProperty value$gYuj = MetaAdapterFactory.getProperty(0xf0ceec7784bd4104L, 0xb53284a17dffbb8aL, 0x39e7fc40f6622210L, 0x39e7fc40f6622212L, "value");
   }
 
   private static final class LINKS {
+    /*package*/ static final SReferenceLink func$XAeY = MetaAdapterFactory.getReferenceLink(0xbe6061dd252a45b8L, 0x9db81233f2660809L, 0x7c255ef750754c74L, 0x7c255ef7543b74a2L, "func");
     /*package*/ static final SContainmentLink x$eHsN = MetaAdapterFactory.getContainmentLink(0xf0ceec7784bd4104L, 0xb53284a17dffbb8aL, 0x39e7fc40f6467101L, 0x39e7fc40f6467103L, "x");
     /*package*/ static final SContainmentLink params$tnN7 = MetaAdapterFactory.getContainmentLink(0xbe6061dd252a45b8L, 0x9db81233f2660809L, 0x7c255ef750754c74L, 0x7c255ef750754d5fL, "params");
+    /*package*/ static final SContainmentLink condition$llIS = MetaAdapterFactory.getContainmentLink(0xbe6061dd252a45b8L, 0x9db81233f2660809L, 0x7c255ef754613a18L, 0x7c255ef754613addL, "condition");
+    /*package*/ static final SContainmentLink bt$6a8i = MetaAdapterFactory.getContainmentLink(0xf0ceec7784bd4104L, 0xb53284a17dffbb8aL, 0x39e7fc40f60e5c49L, 0x39e7fc40f60e5c4aL, "bt");
+    /*package*/ static final SContainmentLink true_expr$hlKP = MetaAdapterFactory.getContainmentLink(0xbe6061dd252a45b8L, 0x9db81233f2660809L, 0x7c255ef754613a18L, 0x7c255ef754613a4bL, "true_expr");
+    /*package*/ static final SContainmentLink if_instrs$6anj = MetaAdapterFactory.getContainmentLink(0xf0ceec7784bd4104L, 0xb53284a17dffbb8aL, 0x39e7fc40f60e5c49L, 0x39e7fc40f60e5c4bL, "if_instrs");
+    /*package*/ static final SContainmentLink false_expr$kjlt = MetaAdapterFactory.getContainmentLink(0xbe6061dd252a45b8L, 0x9db81233f2660809L, 0x7c255ef754613a18L, 0x7c255ef754613a7fL, "false_expr");
+    /*package*/ static final SContainmentLink else_instrs$tFcj = MetaAdapterFactory.getContainmentLink(0xf0ceec7784bd4104L, 0xb53284a17dffbb8aL, 0x39e7fc40f60e5c49L, 0x39e7fc40f60e5dabL, "else_instrs");
+    /*package*/ static final SContainmentLink bt$S2JX = MetaAdapterFactory.getContainmentLink(0xf0ceec7784bd4104L, 0xb53284a17dffbb8aL, 0x39e7fc40f60e0df9L, 0x39e7fc40f60e0dfaL, "bt");
+    /*package*/ static final SContainmentLink instrs$S2YY = MetaAdapterFactory.getContainmentLink(0xf0ceec7784bd4104L, 0xb53284a17dffbb8aL, 0x39e7fc40f60e0df9L, 0x39e7fc40f60e0dfbL, "instrs");
+    /*package*/ static final SContainmentLink args$XH7Z = MetaAdapterFactory.getContainmentLink(0xbe6061dd252a45b8L, 0x9db81233f2660809L, 0x7c255ef75466a140L, 0x7c255ef75466a27aL, "args");
+    /*package*/ static final SContainmentLink localidx$gS$Y = MetaAdapterFactory.getContainmentLink(0xf0ceec7784bd4104L, 0xb53284a17dffbb8aL, 0x39e7fc40f662220cL, 0x39e7fc40f662220eL, "localidx");
+    /*package*/ static final SContainmentLink left$uYCO = MetaAdapterFactory.getContainmentLink(0xbe6061dd252a45b8L, 0x9db81233f2660809L, 0x7c255ef754bf3151L, 0x7c255ef754bf32eeL, "left");
+    /*package*/ static final SContainmentLink right$G9AJ = MetaAdapterFactory.getContainmentLink(0xbe6061dd252a45b8L, 0x9db81233f2660809L, 0x7c255ef754bf3151L, 0x7c255ef754bf3336L, "right");
   }
 }

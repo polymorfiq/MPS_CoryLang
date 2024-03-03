@@ -84,6 +84,14 @@
         <child id="4172580935705206253" name="codes" index="3cCm6H" />
       </concept>
       <concept id="4172580935705147802" name="WebAssembly.structure.Code" flags="ng" index="3cC$nq" />
+      <concept id="4172580935703405178" name="WebAssembly.structure.FuncIdx" flags="ng" index="3cNdSU" />
+      <concept id="4172580935703392702" name="WebAssembly.structure.ExportSection" flags="ng" index="3cNgRY">
+        <child id="4172580935703704516" name="exports" index="3cM4Y4" />
+      </concept>
+      <concept id="4172580935703392703" name="WebAssembly.structure.Export" flags="ng" index="3cNgRZ" />
+      <concept id="4172580935704259407" name="WebAssembly.structure.StartSection" flags="ng" index="3cRXsf">
+        <child id="4172580935704259410" name="x" index="3cRXsi" />
+      </concept>
       <concept id="8010509144878038262" name="WebAssembly.structure.FuncSection" flags="ng" index="1tkztm">
         <child id="8010509144878038901" name="typeindices" index="1tkzjl" />
       </concept>
@@ -214,6 +222,57 @@
                       <ref role="37wK5l" to="w95y:7K_nJtgr_hu" resolve="empty" />
                       <ref role="1Pybhc" to="w95y:7K_nJtgr_fk" resolve="TransformState" />
                     </node>
+                  </node>
+                </node>
+              </node>
+            </node>
+          </node>
+        </node>
+      </node>
+      <node concept="3cNgRY" id="7K_nJtkl_T0" role="2d$Tkv">
+        <node concept="3cNgRZ" id="7K_nJtklAgE" role="3cM4Y4">
+          <node concept="2b32R4" id="7K_nJtklAhl" role="lGtFl">
+            <node concept="3JmXsc" id="7K_nJtklAho" role="2P8S$">
+              <node concept="3clFbS" id="7K_nJtklAhp" role="2VODD2">
+                <node concept="3clFbF" id="7K_nJtklAwn" role="3cqZAp">
+                  <node concept="2YIFZM" id="7K_nJtklAWo" role="3clFbG">
+                    <ref role="37wK5l" to="w95y:7K_nJtkjLen" resolve="exportDeclarations" />
+                    <ref role="1Pybhc" to="w95y:7K_nJtfkF1N" resolve="TypeTransformHelpers" />
+                    <node concept="2OqwBi" id="7K_nJtklAWp" role="37wK5m">
+                      <node concept="30H73N" id="7K_nJtklAWq" role="2Oq$k0" />
+                      <node concept="3Tsc0h" id="7K_nJtklAWr" role="2OqNvi">
+                        <ref role="3TtcxE" to="i6s:3BBZ43THufE" resolve="statements" />
+                      </node>
+                    </node>
+                    <node concept="2YIFZM" id="7K_nJtklAWs" role="37wK5m">
+                      <ref role="37wK5l" to="w95y:7K_nJtgr_hu" resolve="empty" />
+                      <ref role="1Pybhc" to="w95y:7K_nJtgr_fk" resolve="TransformState" />
+                    </node>
+                  </node>
+                </node>
+              </node>
+            </node>
+          </node>
+        </node>
+      </node>
+      <node concept="3cRXsf" id="7K_nJtkmZ7h" role="2d$Tkv">
+        <node concept="3cNdSU" id="7K_nJtkmZ7j" role="3cRXsi" />
+        <node concept="2b32R4" id="7K_nJtkmZ_o" role="lGtFl">
+          <node concept="3JmXsc" id="7K_nJtkmZ_r" role="2P8S$">
+            <node concept="3clFbS" id="7K_nJtkmZ_s" role="2VODD2">
+              <node concept="3clFbF" id="7K_nJtkmZPl" role="3cqZAp">
+                <node concept="2YIFZM" id="7K_nJtkn0iZ" role="3clFbG">
+                  <ref role="37wK5l" to="w95y:7K_nJtkmiQ3" resolve="startDeclaration" />
+                  <ref role="1Pybhc" to="w95y:7K_nJtfkF1N" resolve="TypeTransformHelpers" />
+                  <node concept="2OqwBi" id="7K_nJtkn0j0" role="37wK5m">
+                    <node concept="30H73N" id="7K_nJtkn0j1" role="2Oq$k0" />
+                    <node concept="3Tsc0h" id="7K_nJtkn0j2" role="2OqNvi">
+                      <ref role="3TtcxE" to="i6s:3BBZ43THufE" resolve="statements" />
+                    </node>
+                  </node>
+                  <node concept="2YIFZM" id="7K_nJtkn0j3" role="37wK5m">
+                    <ref role="37wK5l" to="w95y:7K_nJtgr_hu" resolve="empty" />
+                    <ref role="1Pybhc" to="w95y:7K_nJtgr_fk" resolve="TransformState" />
                   </node>
                 </node>
               </node>
