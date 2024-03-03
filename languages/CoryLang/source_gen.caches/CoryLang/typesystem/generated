@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<product version="3" modelHash="3tttvw48c62q9gevtsf7ciufb430bjo">
-  <files names="TypesystemDescriptor.java:typeof_Const_InferenceRule.java:typeof_Function_InferenceRule.java" />
+<product version="3" modelHash="-99u327zgxospfphvoh476hrvbqcsyt6">
+  <files names="TypesystemDescriptor.java:check_BinaryOp_NonTypesystemRule.java:check_NAryOp_NonTypesystemRule.java:typeof_Const_InferenceRule.java:typeof_Function_InferenceRule.java:typeof_Gt_InferenceRule.java:typeof_LabelReference_InferenceRule.java:typeof_Sub_InferenceRule.java" />
 </product>
 

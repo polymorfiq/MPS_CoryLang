@@ -341,7 +341,7 @@
   <node concept="1TIwiD" id="7K_nJtgtCOq">
     <property role="EcuMT" value="8945660651141238042" />
     <property role="TrG5h" value="Label" />
-    <property role="3GE5qa" value="Values" />
+    <property role="3GE5qa" value="" />
     <ref role="1TJDcQ" to="tpck:gw2VY9q" resolve="BaseConcept" />
     <node concept="PrWs8" id="7K_nJtkZgd3" role="PzmwI">
       <ref role="PrY4T" to="tpck:h0TrEE$" resolve="INamedConcept" />
@@ -398,7 +398,7 @@
     <property role="EcuMT" value="8945660651207303335" />
     <property role="TrG5h" value="Sub" />
     <property role="34LRSv" value="sub" />
-    <property role="3GE5qa" value="Operations" />
+    <property role="3GE5qa" value="Operations.Nary" />
     <ref role="1TJDcQ" node="7K_nJtkpE50" resolve="NAryOp" />
   </node>
   <node concept="1TIwiD" id="7K_nJtkpE50">
@@ -449,7 +449,7 @@
   </node>
   <node concept="1TIwiD" id="7K_nJtkJN8y">
     <property role="EcuMT" value="8945660651213107746" />
-    <property role="3GE5qa" value="Operations" />
+    <property role="3GE5qa" value="Operations.Binary" />
     <property role="TrG5h" value="Gt" />
     <property role="34LRSv" value="&gt;" />
     <ref role="1TJDcQ" node="7K_nJtkJN5h" resolve="BinaryOp" />
@@ -500,6 +500,13 @@
       <property role="20lbJX" value="fLJekj4/_1" />
       <ref role="20lvS9" node="7K_nJtgtCOq" resolve="Label" />
     </node>
+  </node>
+  <node concept="1TIwiD" id="7K_nJtmp8a1">
+    <property role="EcuMT" value="8945660651240718977" />
+    <property role="3GE5qa" value="Types" />
+    <property role="TrG5h" value="Boolean" />
+    <property role="34LRSv" value="boolean" />
+    <ref role="1TJDcQ" node="3BBZ43THudK" resolve="Type" />
   </node>
 </model>
 

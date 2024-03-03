@@ -323,7 +323,7 @@
     </node>
   </node>
   <node concept="13h7C7" id="7K_nJtkzEQ$">
-    <property role="3GE5qa" value="Values" />
+    <property role="3GE5qa" value="" />
     <ref role="13h7C2" to="i6s:7K_nJtgtCOq" resolve="Label" />
     <node concept="13hLZK" id="7K_nJtkzEQ_" role="13h7CW">
       <node concept="3clFbS" id="7K_nJtkzEQA" role="2VODD2" />

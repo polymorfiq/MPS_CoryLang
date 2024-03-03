@@ -481,7 +481,7 @@
     </node>
   </node>
   <node concept="24kQdi" id="7K_nJtgtCPS">
-    <property role="3GE5qa" value="Values" />
+    <property role="3GE5qa" value="" />
     <ref role="1XX52x" to="i6s:7K_nJtgtCOq" resolve="Label" />
     <node concept="3EZMnI" id="7K_nJtgtCQ4" role="2wV5jI">
       <node concept="3F0ifn" id="7K_nJtgtCQz" role="3EZMnx">

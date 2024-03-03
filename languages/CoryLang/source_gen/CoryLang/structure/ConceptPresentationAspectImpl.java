@@ -12,6 +12,7 @@ public class ConceptPresentationAspectImpl extends ConceptPresentationAspectBase
   private ConceptPresentation props_Annotation;
   private ConceptPresentation props_BinaryOp;
   private ConceptPresentation props_Block;
+  private ConceptPresentation props_Boolean;
   private ConceptPresentation props_Const;
   private ConceptPresentation props_EmptyStatement;
   private ConceptPresentation props_ExportAnnotation;
@@ -67,6 +68,13 @@ public class ConceptPresentationAspectImpl extends ConceptPresentationAspectBase
           props_Block = cpb.create();
         }
         return props_Block;
+      case LanguageConceptSwitch.Boolean:
+        if (props_Boolean == null) {
+          ConceptPresentationBuilder cpb = new ConceptPresentationBuilder();
+          cpb.rawPresentation("boolean");
+          props_Boolean = cpb.create();
+        }
+        return props_Boolean;
       case LanguageConceptSwitch.Const:
         if (props_Const == null) {
           ConceptPresentationBuilder cpb = new ConceptPresentationBuilder();

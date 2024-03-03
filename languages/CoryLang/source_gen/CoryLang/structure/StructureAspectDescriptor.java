@@ -19,6 +19,7 @@ public class StructureAspectDescriptor extends BaseStructureAspectDescriptor {
   /*package*/ final ConceptDescriptor myConceptAnnotation = createDescriptorForAnnotation();
   /*package*/ final ConceptDescriptor myConceptBinaryOp = createDescriptorForBinaryOp();
   /*package*/ final ConceptDescriptor myConceptBlock = createDescriptorForBlock();
+  /*package*/ final ConceptDescriptor myConceptBoolean = createDescriptorForBoolean();
   /*package*/ final ConceptDescriptor myConceptConst = createDescriptorForConst();
   /*package*/ final ConceptDescriptor myConceptEmptyStatement = createDescriptorForEmptyStatement();
   /*package*/ final ConceptDescriptor myConceptExportAnnotation = createDescriptorForExportAnnotation();
@@ -64,7 +65,7 @@ public class StructureAspectDescriptor extends BaseStructureAspectDescriptor {
 
   @Override
   public Collection<ConceptDescriptor> getDescriptors() {
-    return Arrays.asList(myConceptAnnotation, myConceptBinaryOp, myConceptBlock, myConceptConst, myConceptEmptyStatement, myConceptExportAnnotation, myConceptExpression, myConceptF32, myConceptF64, myConceptFuncCall, myConceptFuncType, myConceptFunction, myConceptFunctionIndexed, myConceptGt, myConceptI32, myConceptI64, myConceptIfStatement, myConceptImport, myConceptLabel, myConceptLabelReference, myConceptLocalIndexed, myConceptModule, myConceptModuleBodyElem, myConceptNAryOp, myConceptName, myConceptOperation, myConceptParamOrResult, myConceptResult, myConceptStartAnnotation, myConceptStatement, myConceptSub, myConceptType, myConceptValue);
+    return Arrays.asList(myConceptAnnotation, myConceptBinaryOp, myConceptBlock, myConceptBoolean, myConceptConst, myConceptEmptyStatement, myConceptExportAnnotation, myConceptExpression, myConceptF32, myConceptF64, myConceptFuncCall, myConceptFuncType, myConceptFunction, myConceptFunctionIndexed, myConceptGt, myConceptI32, myConceptI64, myConceptIfStatement, myConceptImport, myConceptLabel, myConceptLabelReference, myConceptLocalIndexed, myConceptModule, myConceptModuleBodyElem, myConceptNAryOp, myConceptName, myConceptOperation, myConceptParamOrResult, myConceptResult, myConceptStartAnnotation, myConceptStatement, myConceptSub, myConceptType, myConceptValue);
   }
 
   @Override
@@ -77,6 +78,8 @@ public class StructureAspectDescriptor extends BaseStructureAspectDescriptor {
         return myConceptBinaryOp;
       case LanguageConceptSwitch.Block:
         return myConceptBlock;
+      case LanguageConceptSwitch.Boolean:
+        return myConceptBoolean;
       case LanguageConceptSwitch.Const:
         return myConceptConst;
       case LanguageConceptSwitch.EmptyStatement:
@@ -175,6 +178,16 @@ public class StructureAspectDescriptor extends BaseStructureAspectDescriptor {
     b.origin("r:49f73168-bdae-44eb-95b8-66b51141f222(CoryLang.structure)/8945660651215288132");
     b.version(3);
     b.aggregate("body", 0x7c255ef754e077f9L).target(0xbe6061dd252a45b8L, 0x9db81233f2660809L, 0x39e7fc40f9b5e3e7L).optional(true).ordered(true).multiple(true).origin("8945660651215288313").done();
+    return b.create();
+  }
+  private static ConceptDescriptor createDescriptorForBoolean() {
+    ConceptDescriptorBuilder2 b = new ConceptDescriptorBuilder2("CoryLang", "Boolean", 0xbe6061dd252a45b8L, 0x9db81233f2660809L, 0x7c255ef756648281L);
+    b.class_(false, false, false);
+    // extends: CoryLang.structure.Type
+    b.super_(0xbe6061dd252a45b8L, 0x9db81233f2660809L, 0x39e7fc40f9b5e370L);
+    b.origin("r:49f73168-bdae-44eb-95b8-66b51141f222(CoryLang.structure)/8945660651240718977");
+    b.version(3);
+    b.alias("boolean");
     return b.create();
   }
   private static ConceptDescriptor createDescriptorForConst() {
